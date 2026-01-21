@@ -10,7 +10,7 @@ from .models import (
     OmiljeniDogadjaj
 )
 
-from .routes import korisnik_bp, dogadjaj_bp, kategorija_bp
+from .routes import korisnik_bp, dogadjaj_bp, kategorija_bp, omiljeni_bp, privatni_bp
 
 def create_app():
     app = Flask(__name__)
@@ -23,6 +23,8 @@ def create_app():
     app.register_blueprint(korisnik_bp)
     app.register_blueprint(dogadjaj_bp)
     app.register_blueprint(kategorija_bp)
+    app.register_blueprint(omiljeni_bp)
+    app.register_blueprint(privatni_bp)
 
 
     return app
