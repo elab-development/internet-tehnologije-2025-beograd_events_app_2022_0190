@@ -13,7 +13,12 @@ def svi_dogadjaji():
             "id": d.id,
             "naziv": d.naziv,
             "opis": d.opis,
-            "datum": str(d.datum)
+            "datum": str(d.datum),
+            "lokacija": d.lokacija,
+            "cena": d.cena,
+            "imageURL": d.imageURL,
+            "sourceURL": d.sourceURL,
+            "kategorija_dogadjaja_id": d.kategorija_dogadjaja_id
         } for d in dogadjaji
     ])
 
@@ -27,10 +32,33 @@ def kreiraj_dogadjaj():
         opis=data["opis"],
         datum=data["datum"],
         lokacija=data["lokacija"],
+        cena=data.get("cena"),
+        imageURL=data.get("imageURL"),
+        sourceURL=data.get("sourceURL"),
         kategorija_dogadjaja_id=data["kategorija_dogadjaja_id"]
     )
 
     db.session.add(d)
     db.session.commit()
 
-    return jsonify({"poruka": "Dogadjaj dodat"}), 201
+    return jsonify({
+        "poruka": "Dogadjaj dodat",
+        "id": d.id
+    }), 201
+
+
+@dogadjaj_bp.route("/<int:id>", methods=["GET"])
+def jedan_dogadjaj(id):
+    d = Dogadjaj.query.get_or_404(id)
+
+    return jsonify({
+        "id": d.id,
+        "naziv": d.naziv,
+        "opis": d.opis,
+        "datum": str(d.datum),
+        "lokacija": d.lokacija,
+        "cena": d.cena,
+        "imageURL": d.imageURL,
+        "sourceURL": d.sourceURL,
+        "kategorija_dogadjaja_id": d.kategorija_dogadjaja_id
+    })

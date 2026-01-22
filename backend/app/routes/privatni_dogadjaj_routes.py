@@ -44,3 +44,34 @@ def svi_privatni():
             "korisnik_id": p.korisnik_id
         } for p in privatni
     ])
+
+@privatni_bp.route("/<int:id>", methods=["GET"])
+def jedan_privatni(id):
+    p = PrivatniDogadjaj.query.get_or_404(id)
+
+    return jsonify({
+        "id": p.id,
+        "naziv": p.naziv,
+        "opis": p.opis,
+        "datum": str(p.datum),
+        "lokacija": p.lokacija,
+        "kapacitet": p.kapacitet,
+        "korisnik_id": p.korisnik_id
+    })
+@privatni_bp.route("/korisnik/<int:korisnik_id>", methods=["GET"])
+def privatni_po_korisniku(korisnik_id):
+    privatni = PrivatniDogadjaj.query.filter_by(
+        korisnik_id=korisnik_id
+    ).all()
+
+    return jsonify([
+        {
+            "id": p.id,
+            "naziv": p.naziv,
+            "opis": p.opis,
+            "datum": str(p.datum),
+            "lokacija": p.lokacija,
+            "kapacitet": p.kapacitet,
+            "korisnik_id": p.korisnik_id
+        } for p in privatni
+    ])

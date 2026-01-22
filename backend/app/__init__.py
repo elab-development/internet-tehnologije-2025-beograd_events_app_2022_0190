@@ -25,6 +25,7 @@ def create_app():
     app.register_blueprint(kategorija_bp)
     app.register_blueprint(omiljeni_bp)
     app.register_blueprint(privatni_bp)
+    print(app.url_map)
 
 
     return app
