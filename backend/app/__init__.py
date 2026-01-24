@@ -1,6 +1,8 @@
 from flask import Flask
 from .config import Config
 from .extensions import db, migrate, jwt
+from scraping.tickets_scraper import run_scraping
+from scheduler.jobs import start_scheduler
 
 from .models import (
     Korisnik,
@@ -20,12 +22,10 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    app.register_blueprint(korisnik_bp)
-    app.register_blueprint(dogadjaj_bp)
-    app.register_blueprint(kategorija_bp)
-    app.register_blueprint(omiljeni_bp)
-    app.register_blueprint(privatni_bp)
-    print(app.url_map)
+   
+    with app.app_context():
+        run_scraping()
 
+    start_scheduler()
 
     return app
