@@ -1,0 +1,22 @@
+.app-button {
+    padding: 15px 16px;
+    border-radius: 0px;
+    border: 2px solid transparent; /* bitno */
+    cursor: pointer;
+    background: none;
+    color: white;
+    font-weight: 600;
+  
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.25s ease;
+  }
+  
+  /* ✨ HOVER EFEKAT */
+  .app-button:hover {
+    border-color: #5b0b5e;          /* ljubičasta granica */
+    box-shadow: 0 0 10px rgba(91, 11, 94, 0.6);
+    transform: translateY(-2px);   /* blagi "lift" efekat */
+  }
+  

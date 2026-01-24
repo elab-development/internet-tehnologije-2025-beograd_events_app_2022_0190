@@ -1,0 +1,41 @@
+.up-page {
+    margin-top: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .up-card {
+    width: 420px;
+    background: rgba(10, 83, 49, 0.85);
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+  }
+  
+  .up-avatar {
+    width: 110px;
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+  }
+  
+  .up-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+  }
+  
+  .up-field input {
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+  }
+  
+  .up-reset-link {
+    margin-top: 15px;
+    display: inline-block;
+    cursor: pointer;
+    color: #b7c9d4;
+  }
+  

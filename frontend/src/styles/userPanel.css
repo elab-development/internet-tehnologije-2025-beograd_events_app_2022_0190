@@ -1,0 +1,89 @@
+/* ===============================
+   USER PANEL
+================================ */
+
+.user-panel {
+  width: 580px;
+  background: linear-gradient(
+    135deg,
+    rgba(10, 83, 49, 0.92),
+    rgba(20, 120, 75, 0.88)
+  );
+  border-radius: 18px;
+  margin-bottom: 22px;
+  color: white;
+  overflow: hidden;
+
+  box-shadow: 0 14px 36px rgba(0,0,0,0.18);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 48px rgba(0,0,0,0.28);
+}
+
+/* ===== HEADER ===== */
+.user-panel-header {
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* strelica */
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+/* ===== BODY ===== */
+.user-panel-body {
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+
+  background: rgba(0,0,0,0.18);
+}
+
+.user-panel-body label {
+  font-size: 13px;
+  color: #b7c9d4;
+}
+
+.user-panel-body input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+.user-panel-body input:focus {
+  box-shadow: 0 0 0 3px rgba(47,163,122,0.35);
+}
+
+.user-panel-body button {
+  grid-column: span 2;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* potvrda */
+.confirm-box {
+  grid-column: span 2;
+  margin-top: 10px;
+  background: rgba(0,0,0,0.3);
+  padding: 12px;
+  border-radius: 12px;
+}

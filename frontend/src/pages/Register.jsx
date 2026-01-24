@@ -63,7 +63,7 @@ function Register() {
           Već imaš nalog? Prijavi se
         </div>
       </div>
-      <button className="guest-btn" onClick={() => navigate("/")}>
+      <button className="guest-btn" onClick={() => navigate("/Home")}>
           Uđi kao gost
         </button>
     </div>
