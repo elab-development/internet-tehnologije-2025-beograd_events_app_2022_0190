@@ -45,7 +45,7 @@ def scrape_detail_page(url):
         soup = BeautifulSoup(r.text, "html.parser")
 
         if "event-list-item" not in r.text:
-            print("❌ Nije event stranica:", url)
+            print("Nije event stranica:", url)
             return None, None, ""
         
         opis = ""
@@ -90,7 +90,7 @@ def scrape_detail_page(url):
         return datum, cena, opis
 
     except Exception as e:
-        print("⚠️ Greška:", e)
+        print("Greška:", e)
         return None, None, ""
 
 
@@ -99,7 +99,7 @@ def scrape_detail_page(url):
 
 
 def run_scraping():
-    print("🕷️ Scraping tickets.rs (FULL)...")
+    print("Scraping tickets.rs (FULL)...")
 
    
 
@@ -107,11 +107,11 @@ def run_scraping():
         r = requests.get(URL, headers=HEADERS, timeout=15)
 
     except Exception as e:
-        print("⚠️ tickets.rs nije dostupan (network):", e)
+        print("tickets.rs nije dostupan (network):", e)
         return
 
     if r.status_code != 200:
-        print(f"⚠️ tickets.rs vratio status {r.status_code}, preskačem")
+        print(f"tickets.rs vratio status {r.status_code}, preskačem")
         return
 
     r.raise_for_status()
@@ -183,4 +183,4 @@ def run_scraping():
             db.session.add(dogadjaj)
             dodato += 1
     db.session.commit()
-    print(f"✅ Tickets:Dodato novih događaja: {dodato}")
+    print(f"Tickets:Dodato novih događaja: {dodato}")

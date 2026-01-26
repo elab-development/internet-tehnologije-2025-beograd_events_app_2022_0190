@@ -116,7 +116,7 @@ def extract_lokacija_from_opis(opis):
 # GLAVNA FUNKCIJA
 # ---------------------------------------------------
 def run_beograd_scraping():
-    print("🕷️ Scraping beograd.rs manifestacije...")
+    print("Scraping beograd.rs manifestacije...")
 
     dodato = 0
 
@@ -128,7 +128,7 @@ def run_beograd_scraping():
         soup = BeautifulSoup(r.text, "html.parser")
 
         cards = soup.select("div.simple-news-card")
-        print(f"➡️ Stranica {page}: pronađeno {len(cards)} događaja")
+        print(f"Beograd.rs: Stranica {page}: pronađeno {len(cards)} događaja")
 
         for card in cards:
             # LINK
@@ -192,4 +192,4 @@ def run_beograd_scraping():
             dodato += 1
 
     db.session.commit()
-    print(f"✅ Beograd.rs: dodato {dodato} događaja")
+    print(f"Beograd.rs: dodato {dodato} događaja")
