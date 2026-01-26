@@ -23,9 +23,7 @@ def create_app():
     jwt.init_app(app)
 
    
-    with app.app_context():
-        run_scraping()
 
-    start_scheduler()
+    start_scheduler(app)
 
     return app

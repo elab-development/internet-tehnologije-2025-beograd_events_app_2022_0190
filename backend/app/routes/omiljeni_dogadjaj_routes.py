@@ -73,7 +73,6 @@ def dodaj_omiljeni():
     korisnik_id = data["korisnik_id"]
     dogadjaj_id = data["dogadjaj_id"]
 
-    # 1️⃣ Provera da li vec postoji u omiljenim
     postoji = OmiljeniDogadjaj.query.get(
         (korisnik_id, dogadjaj_id)
     )
@@ -83,13 +82,10 @@ def dodaj_omiljeni():
             {"greska": "Dogadjaj je vec u omiljenim"}
         ), 400
 
-    # 2️⃣ Uzimamo dogadjaj iz baze
     dogadjaj = Dogadjaj.query.get_or_404(dogadjaj_id)
 
-    # 3️⃣ Racunamo podsetnik = dan pre dogadjaja
     podsetnik = dogadjaj.datum - timedelta(days=1)
 
-    # 4️⃣ Kreiramo omiljeni dogadjaj
     novi = OmiljeniDogadjaj(
         korisnik_id=korisnik_id,
         dogadjaj_id=dogadjaj_id,

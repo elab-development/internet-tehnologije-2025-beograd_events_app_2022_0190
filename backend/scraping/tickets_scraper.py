@@ -101,18 +101,34 @@ def scrape_detail_page(url):
 def run_scraping():
     print("🕷️ Scraping tickets.rs (FULL)...")
 
-    r = requests.get(URL, headers=HEADERS, timeout=15)
+   
+
+    try:
+        r = requests.get(URL, headers=HEADERS, timeout=15)
+
+    except Exception as e:
+        print("⚠️ tickets.rs nije dostupan (network):", e)
+        return
+
+    if r.status_code != 200:
+        print(f"⚠️ tickets.rs vratio status {r.status_code}, preskačem")
+        return
 
     r.raise_for_status()
 
+    
     soup = BeautifulSoup(r.text, "html.parser")
    
     slides = soup.select(".swiper-slide")
+    #print(f"➡️ Tickets: pronađeno {len(slides)} događaja")
     dodato = 0
-
+    #print("DEBUG: tickets.rs status:", r.status_code)
+    #print("DEBUG: tickets.rs html length:", len(r.text))
+    #slides = soup.select(".swiper-slide")
+    #print("DEBUG: broj swiper-slide:", len(slides))
     for slide in slides:
         eventi = slide.select('a[href^="/tour/"]')
-
+        #print("DEBUG: eventi u slide:", len(eventi))
         for e in eventi:
             naziv_el = e.select_one("h3")
             datum_el = e.select_one(".date-time")
@@ -167,4 +183,4 @@ def run_scraping():
             db.session.add(dogadjaj)
             dodato += 1
     db.session.commit()
-    print(f"✅ Dodato novih događaja: {dodato}")
+    print(f"✅ Tickets:Dodato novih događaja: {dodato}")
