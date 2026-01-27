@@ -136,11 +136,11 @@ def run_narodno_scraping():
             cena=0,
             imageURL=image_url,
             sourceURL=source_url,
-            kategorija_dogadjaja_id=1
+            kategorija_dogadjaja_id=3
         )
 
         db.session.add(dogadjaj)
         dodato += 1
 
     db.session.commit()
-    print(f"✅ Narodno pozorište: dodato {dodato} događaja")
+    print(f"Narodno pozorište: dodato {dodato} događaja")
