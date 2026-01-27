@@ -1,0 +1,111 @@
+/* ===== MODAL BACKDROP ===== */
+/* ===== MODAL BACKDROP ===== */
+.pe-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  
+    background: rgba(0,0,0,0.6);
+    z-index: 999999;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    isolation: isolate;
+
+    backdrop-filter: blur(4px);
+    transition: background 0.3s ease;
+  }
+  
+  .pe-modal {
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+    width: 420px;
+  
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    animation: modalEnter 0.35s ease-out;
+  
+    box-shadow: 0 30px 60px rgba(34, 153, 87, 0.25)
+
+    
+  }
+  
+  
+  .pe-modal h2 {
+    margin-bottom: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    color: #06301f;
+    font-size: 30px;
+  }
+  
+  .pe-modal input{
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 350px;
+    border-color: #1f6b4d;
+    transition: border 0.25s ease, box-shadow 0.25s ease;
+  }
+  .pe-modal textarea {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 350px;
+    border-color: #1f6b4d;
+    transition: border 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .pe-modal input:focus,
+.pe-modal textarea:focus {
+  outline: none;
+  border: 2px solid #1f7a57;
+  box-shadow: 0 0 0 3px rgba(31, 122, 87, 0.2);
+}
+  
+  .pe-modal button {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .pe-modal button:first-of-type {
+    background: #1f6b4d;
+    color: white;
+    margin-right: 10px;
+    justify-self: center;
+    width: 350px;
+  }
+  
+  
+
+  .pe-modal-actions button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .pe-modal-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    margin-top: 20px;
+  }
+  @keyframes modalEnter {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }

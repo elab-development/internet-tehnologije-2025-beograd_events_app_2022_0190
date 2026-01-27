@@ -1,0 +1,78 @@
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    background:
+      linear-gradient(rgba(121, 175, 150, 0.75), rgba(121, 175, 150, 0.75)),
+      url("../assets/pobednik.jpg")
+ center / cover no-repeat;
+  }
+  
+  .auth-card {
+    width: 380px;
+    background: #53a375;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  
+  .auth-card input {
+    width: 80%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .auth-card button {
+    width: 60%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #6fb1fc;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .guest-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+  
+    padding: 12px 22px;
+    border-radius: 30px;
+    border: none;
+  
+    background: rgba(255, 255, 255, 0.9);
+    color: #6fb1fc;
+    font-weight: bold;
+    cursor: pointer;
+  
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: all 0.25s ease;
+  }
+  
+  .guest-btn:hover {
+    background: #6fb1fc;
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .auth-link {
+    margin-top: 12px;
+    color: #6fb1fc;
+    cursor: pointer;
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: #6fb1fc;
+  }
+  

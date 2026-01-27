@@ -25,3 +25,12 @@ def dodaj_kategoriju():
     db.session.commit()
 
     return jsonify({"poruka": "Kategorija dodata"}), 201
+
+@kategorija_bp.route("/<int:id>", methods=["GET"])
+def jedna_kategorija(id):
+    kategorija = KategorijaDogadjaja.query.get_or_404(id)
+
+    return jsonify({
+        "id": kategorija.id,
+        "naziv": kategorija.naziv
+    })

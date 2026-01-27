@@ -1,0 +1,126 @@
+/* ===============================
+   CATEGORIES PAGE
+================================ */
+
+.categories-page {
+  margin-top: 120px; /* ispod menija */
+  padding: 40px 24px;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(circle at top, rgba(47,163,122,0.08), transparent 60%);
+}
+
+/* ===== NASLOV ===== */
+.categories-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #1f492d;
+}
+
+/* ===== TOOLBAR ===== */
+.categories-toolbar {
+  max-width: 900px;
+  margin: 0 auto 30px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.categories-toolbar input {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 260px;
+}
+
+.categories-toolbar button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #1f6b4d;
+  color: white;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.categories-toolbar button:hover {
+  background: #2fa37a;
+  transform: translateY(-2px);
+}
+
+/* ===== FORM ===== */
+.category-form {
+  max-width: 400px;
+  margin: 0 auto 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.category-form input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.category-form button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #1f6b4d;
+  color: white;
+  cursor: pointer;
+}
+
+/* ===== LIST ===== */
+.categories-list {
+  max-width: 900px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* ===== CATEGORY CARD ===== */
+.category-card {
+  background: linear-gradient(
+    135deg,
+    rgba(10,83,49,0.92),
+    rgba(20,120,75,0.88)
+  );
+  color: white;
+  padding: 18px 22px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
+
+  box-shadow: 0 14px 36px rgba(0,0,0,0.18);
+  cursor: default;
+
+  animation: fadeUp 0.5s ease forwards;
+  opacity: 0;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 22px 48px rgba(0,0,0,0.28);
+}
+
+/* ===== ANIMACIJA ===== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

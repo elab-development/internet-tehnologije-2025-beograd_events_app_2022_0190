@@ -1,0 +1,113 @@
+const EVENTS_KEY = "events";
+
+/**
+ * Inicijalni mock podaci
+ * categoryId:
+ * 1 - Koncert
+ * 2 - Pozorište
+ * 3 - Sport
+ * 4 - Festival
+ */
+const initialEvents = [
+  {
+    id: 1,
+    naziv: "Koncert Bijelog Dugmeta",
+    opis: "Legendarni koncert u Štark Areni.",
+    datum: "2026-03-15",
+    lokacija: "Štark Arena, Beograd",
+    cena: 4500,
+    categoryId: 1,
+    imageURL: "https://images.pexels.com/photos/2486168/pexels-photo-2486168.jpeg",
+    sourceURL: "https://tickets.rs"
+  },
+  {
+    id: 2,
+    naziv: "Pozorišna predstava Hamlet",
+    opis: "Klasik Vilijama Šekspira u modernoj interpretaciji.",
+    datum: "2026-02-10",
+    lokacija: "Narodno pozorište",
+    cena: 1800,
+    categoryId: 2,
+    imageURL: "https://images.pexels.com/photos/2486168/pexels-photo-2486168.jpeg",
+    sourceURL: "https://narodnopozoriste.rs"
+  },
+  {
+    id: 3,
+    naziv: "Beogradski maraton",
+    opis: "Tradicionalna sportska manifestacija.",
+    datum: "2026-04-20",
+    lokacija: "Centar Beograda",
+    cena: 0,
+    categoryId: 3,
+    imageURL: "https://images.pexels.com/photos/2486168/pexels-photo-2486168.jpeg",
+    sourceURL: "https://bgmarathon.org"
+  },
+  {
+    id: 4,
+    naziv: "Festival vina",
+    opis: "Degustacija domaćih i stranih vina.",
+    datum: "2026-05-05",
+    lokacija: "Kalemegdan",
+    cena: 2500,
+    categoryId: 4,
+    imageURL: "https://images.pexels.com/photos/2486168/pexels-photo-2486168.jpeg",
+    sourceURL: "https://winefest.rs"
+  },
+
+  {
+    id: 5,
+    naziv: "Festival vina",
+    opis: "Degustacija domaćih i stranih vina.",
+    datum: "2026-05-05",
+    lokacija: "Kalemegdan",
+    cena: 2500,
+    categoryId: 4,
+    imageURL: "https://images.pexels.com/photos/2486168/pexels-photo-2486168.jpeg",
+    sourceURL: "https://winefest.rs"
+  },
+
+  {
+    id: 6,
+    naziv: "Festival vina",
+    opis: "Degustacija domaćih i stranih vina.",
+    datum: "2026-05-05",
+    lokacija: "Kalemegdan",
+    cena: 2500,
+    categoryId: 4,
+    imageURL: "https://images.pexels.com/photos/2486168/pexels-photo-2486168.jpeg",
+    sourceURL: "https://winefest.rs"
+  }
+];
+
+/**
+ * Ako nema događaja u localStorage – upisujemo mock podatke
+ */
+// const initEvents = () => {
+//   const events = JSON.parse(localStorage.getItem(EVENTS_KEY));
+//   if (!events) {
+//     localStorage.setItem(EVENTS_KEY, JSON.stringify(initialEvents));
+//   }
+// };
+
+const initEvents = () => {
+  localStorage.setItem(EVENTS_KEY, JSON.stringify(initialEvents));
+};
+
+initEvents();
+
+/**
+ * Vraća sve događaje
+ */
+export const getAllEvents = () => {
+  return JSON.parse(localStorage.getItem(EVENTS_KEY)) || [];
+};
+
+/**
+ * Vraća događaj po ID-u
+ */
+export const getEventById = (id) => {
+  const events = JSON.parse(localStorage.getItem(EVENTS_KEY)) || [];
+  return events.find(e => e.id === Number(id));
+};
+
+

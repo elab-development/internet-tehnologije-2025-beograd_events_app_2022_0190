@@ -1,0 +1,100 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background:  rgb(63, 102, 84) ;
+  color: white;
+  padding: 11px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.navbar.hide {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.navbar.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  margin-right: 40px;
+}
+
+/* ✨ LEPI FONT + PODVLAČENJE */
+.nav-link {
+  position: relative;
+  color: rgb(23, 10, 37);
+  text-decoration: none;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 20px;
+  cursor: grab;
+  padding-bottom: 10px;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: #3d043f;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.user-info {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.app-button{
+  margin-left: 50px;
+}
+
+/* DROPDOWN */
+.dropdown {
+  position: relative;
+  display: flex;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  background: #2a2a2a;
+  padding: 12px;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 10px;
+  width: 150px;
+  
+}
+
+.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-menu span {
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.dropdown-menu span:hover {
+  color: #27523e;
+}
