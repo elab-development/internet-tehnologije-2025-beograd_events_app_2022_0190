@@ -96,28 +96,29 @@ export const registerUser = async (user) => {
 /**
  * LOGIN – proveravamo korisnika iz baze
  */
+/**
+ * LOGIN – proveravamo korisnika iz baze (email + lozinka)
+ */
 export const loginUser = async (email, password) => {
   try {
     const response = await fetch(API_URL);
     const users = await response.json();
 
     const user = users.find(
-      (u) => u.email === email
+      (u) => u.email === email && u.lozinka === password
     );
 
     if (!user) {
       return { success: false, message: "Pogrešan email ili lozinka" };
     }
 
-    // ⚠️ trenutno NEMAŠ backend login,
-    // zato ovo ostaje privremeno:
     localStorage.setItem("loggedUser", JSON.stringify(user));
-
     return { success: true };
   } catch (error) {
     return { success: false, message: "Backend nije dostupan" };
   }
 };
+
 
 export const logoutUser = () => {
   localStorage.removeItem("loggedUser");
