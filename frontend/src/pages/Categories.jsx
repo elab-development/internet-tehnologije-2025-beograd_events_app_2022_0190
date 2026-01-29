@@ -14,7 +14,12 @@ function Categories() {
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
   useEffect(() => {
-    setCategories(getAllCategories());
+    const fetchCategories = async () => {
+      const data = await getAllCategories();
+      setCategories(data);
+    };
+
+    fetchCategories();
   }, []);
 
   if (!loggedUser || loggedUser.uloga !== "ADMIN") {
@@ -25,15 +30,17 @@ function Categories() {
     c.naziv.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleCreate = () => {
-    const result = createCategory(newCategory);
+  const handleCreate = async () => {
+    const result = await createCategory(newCategory);
 
     if (!result.success) {
       alert(result.message);
       return;
     }
 
-    setCategories(getAllCategories());
+    const refreshed = await getAllCategories();
+    setCategories(refreshed);
+
     setNewCategory("");
     setShowForm(false);
   };

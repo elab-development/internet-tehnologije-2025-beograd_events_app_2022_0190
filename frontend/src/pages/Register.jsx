@@ -24,10 +24,10 @@ function Register() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const result = registerUser(form);
+    const result = await registerUser(form);
     if (!result.success) {
       alert(result.message);
       return;

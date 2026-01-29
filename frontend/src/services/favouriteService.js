@@ -1,75 +1,44 @@
-const KEY = "favouriteEvents";
+const API_URL = "http://localhost:5000/api/omiljeni";
 
-const getAll = () => {
-  return JSON.parse(localStorage.getItem(KEY)) || {};
-};
-
-// ✅ PROVERA OMILJENOG
-export const isFavourite = (userEmail, eventId, eventType) => {
-  const data = getAll();
-  const type = eventType ?? "PUBLIC";
-
-  return data[userEmail]?.some(
-    f => f.eventId === eventId && f.eventType === type
+/**
+ * ✅ Provera da li je događaj u omiljenim (iz baze)
+ */
+export const isFavourite = async (korisnikId, dogadjajId) => {
+  const response = await fetch(
+    `${API_URL}/${korisnikId}/${dogadjajId}`
   );
+
+  return response.ok;
 };
 
-// ⭐ DODAVANJE OMILJENOG
-export const addFavouriteEvent = (userEmail, event) => {
-  const data = getAll();
-
-  if (!data[userEmail]) {
-    data[userEmail] = [];
-  }
-
-  const eventType = event.eventType ?? "PUBLIC";
-
-  // ⛔ spreči duplikate
-  if (
-    data[userEmail].some(
-      f => f.eventId === event.id && f.eventType === eventType
-    )
-  ) {
-    return;
-  }
-
-  // 🗓 datum događaja (robustno)
-  const rawDate =
-    event.datum ||
-    event.date ||
-    event.data;
-
-  let reminderDate = null;
-
-  if (rawDate) {
-    const [year, month, day] = rawDate.split("-").map(Number);
-    const eventDate = new Date(year, month - 1, day);
-
-    reminderDate = new Date(eventDate);
-    reminderDate.setDate(eventDate.getDate() - 1);
-  }
-
-  data[userEmail].push({
-    eventId: event.id,
-    eventType,
-    podsetnik: reminderDate
-      ? reminderDate.toISOString().split("T")[0]
-      : null
+/**
+ * ⭐ Dodavanje u omiljene (baza)
+ */
+export const addFavouriteEvent = async (korisnikId, dogadjajId) => {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      korisnik_id: korisnikId,
+      dogadjaj_id: dogadjajId,
+    }),
   });
 
-  localStorage.setItem(KEY, JSON.stringify(data));
+  return response.ok;
 };
 
-// ❌ UKLANJANJE OMILJENOG
-export const removeFavouriteEvent = (userEmail, eventId, eventType) => {
-  const data = getAll();
-  const type = eventType ?? "PUBLIC";
-
-  if (!data[userEmail]) return;
-
-  data[userEmail] = data[userEmail].filter(
-    f => !(f.eventId === eventId && f.eventType === type)
+/**
+ * ❌ Uklanjanje iz omiljenih (baza)
+ */
+export const removeFavouriteEvent = async (korisnikId, dogadjajId) => {
+  const response = await fetch(
+    `${API_URL}/${korisnikId}/${dogadjajId}`,
+    {
+      method: "DELETE",
+    }
   );
 
-  localStorage.setItem(KEY, JSON.stringify(data));
+  return response.ok;
 };

@@ -11,10 +11,10 @@ function Login() {
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    const result = loginUser(form.email, form.password);
+    const result = await loginUser(form.email, form.password);
 
     if (!result.success) {
       alert(result.message); // ❌ nevalidan korisnik

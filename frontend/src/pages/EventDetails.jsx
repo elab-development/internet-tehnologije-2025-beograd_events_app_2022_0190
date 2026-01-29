@@ -27,67 +27,86 @@ function EventDetails() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-  
-    const timer = setTimeout(() => {
+    const fetchEvent = async () => {
+      setLoading(true);
+
       let foundEvent = null;
-  
-      // 🔑 odlučujemo po URL-u
+
       if (location.pathname.includes("/events/private")) {
-        foundEvent = getPrivateEventById(id);
+        foundEvent = await getPrivateEventById(id);
       } else {
-        foundEvent = getEventById(id);
+        foundEvent = await getEventById(id);
       }
-  
+
       setEvent(foundEvent);
-  
+
+      // ⚠️ ako ti više ne koristiš kategorije, može i da ostane null
       if (foundEvent?.categoryId) {
-        setCategory(getCategoryById(foundEvent.categoryId));
+        const cat = await getCategoryById(foundEvent.categoryId);
+        setCategory(cat);
       } else {
         setCategory(null);
       }
-  
-      if (loggedUser?.email && foundEvent) {
-        setFavourite(
-          isFavourite(loggedUser.email, foundEvent.id, eventType)
+
+      if (loggedUser && foundEvent) {
+        const fav = await isFavourite(
+          loggedUser.id,
+          foundEvent.id
         );
-        
+        setFavourite(fav);
       } else {
         setFavourite(false);
       }
-  
+
+
       setLoading(false);
-    }, 800);
-  
-    return () => clearTimeout(timer);
+    };
+
+    fetchEvent();
   }, [id, location.pathname]);
-  
+
+
   const eventType = location.pathname.includes("/events/private")
-  ? "PRIVATE"
-  : "PUBLIC";
+    ? "PRIVATE"
+    : "PUBLIC";
+
+  const isPrivateEvent = location.pathname.includes("/events/private");
 
 
-  const handleFavouriteClick = () => {
-    if (!loggedUser || !event) return;
-  
+  const handleFavouriteClick = async () => {
+  if (!loggedUser || !event) return;
+
+  try {
     if (favourite) {
-      removeFavouriteEvent(loggedUser.email, event.id, eventType);
+      await removeFavouriteEvent(
+        loggedUser.id,
+        event.id
+      );
 
       alert("Događaj je uklonjen iz omiljenih ❤️");
     } else {
-      addFavouriteEvent(loggedUser.email, {
-        ...event,
-        eventType,
-        podsetnik: new Date(event.datum)
-      });
-      
+      const success = await addFavouriteEvent(
+        loggedUser.id,
+        event.id
+      );
+
+      if (!success) {
+        alert("Događaj je već u omiljenim");
+        return;
+      }
+
       alert("Događaj je dodat u omiljene ⭐");
     }
-  
+
     setFavourite(!favourite);
-  };
-  
-  
+  } catch (error) {
+    alert("Greška pri komunikaciji sa serverom");
+  }
+};
+
+
+
+
 
   if (loading) {
     return (
@@ -109,7 +128,7 @@ function EventDetails() {
           <div className="ed-left">
             <h1 className="ed-title">
               {event.naziv}
-              {canFavourite && (
+              {canFavourite && !isPrivateEvent &&(
                 <span
                   className={`ed-heart ${favourite ? "active" : ""}`}
                   onClick={handleFavouriteClick}
@@ -142,18 +161,18 @@ function EventDetails() {
             )}
 
             {/* LINK ZA KUPVINU KARTE – SAMO ZA JAVNE DOGAĐAJE */}
-{event.sourceURL && (
-  <p className="ed-ticket-link">
-    Kartu za ovaj događaj možete kupiti{" "}
-    <a
-      href={event.sourceURL}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      ovde
-    </a>
-  </p>
-)}
+            {event.sourceURL && (
+              <p className="ed-ticket-link">
+                Kartu za ovaj događaj možete kupiti{" "}
+                <a
+                  href={event.sourceURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  ovde
+                </a>
+              </p>
+            )}
 
           </div>
 

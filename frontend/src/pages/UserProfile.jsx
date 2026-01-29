@@ -17,12 +17,12 @@ function UserProfile() {
 
         <div className="up-field">
           <label>Ime</label>
-          <input value={user.name} disabled />
+          <input value={user.ime} disabled />
         </div>
 
         <div className="up-field">
           <label>Prezime</label>
-          <input value={user.surname} disabled />
+          <input value={user.prezime} disabled />
         </div>
 
         <div className="up-field">

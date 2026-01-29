@@ -151,6 +151,9 @@ def run_scraping():
             style = e.get("style", "")
             if "url(" in style:
                 image_url = style.split("url(")[1].split(")")[0].replace('"', "")
+                image_url = image_url.replace("'", "")
+            
+            
 
             source_url = URL + e.get("href")
 

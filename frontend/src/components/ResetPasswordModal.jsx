@@ -5,23 +5,48 @@ function ResetPasswordModal({ onClose }) {
   const [oldPass, setOldPass] = useState("");
   const [newPass, setNewPass] = useState("");
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
-  const handleReset = () => {
-    const index = users.findIndex(u => u.email === loggedUser.email);
-
-    if (users[index].password !== oldPass) {
+  const handleReset = async () => {
+    // ✅ provera stare lozinke (kao i ranije)
+    if (loggedUser.lozinka !== oldPass) {
       alert("Stara lozinka nije ispravna!");
       return;
     }
 
-    users[index].password = newPass;
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("loggedUser", JSON.stringify(users[index]));
+    try {
+      // ✅ PUT ka backendu
+      const response = await fetch(
+        `http://localhost:5000/api/korisnici/${loggedUser.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            lozinka: newPass,
+          }),
+        }
+      );
 
-    alert("Lozinka je uspešno promenjena!");
-    onClose();
+      if (!response.ok) {
+        alert("Greška pri promeni lozinke");
+        return;
+      }
+
+      // ✅ osvežavamo localStorage loggedUser
+      const updatedUser = {
+        ...loggedUser,
+        lozinka: newPass,
+      };
+
+      localStorage.setItem("loggedUser", JSON.stringify(updatedUser));
+
+      alert("Lozinka je uspešno promenjena!");
+      onClose();
+    } catch (error) {
+      alert("Backend nije dostupan");
+    }
   };
 
   return (
@@ -33,14 +58,14 @@ function ResetPasswordModal({ onClose }) {
           type="password"
           placeholder="Stara lozinka"
           value={oldPass}
-          onChange={e => setOldPass(e.target.value)}
+          onChange={(e) => setOldPass(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Nova lozinka"
           value={newPass}
-          onChange={e => setNewPass(e.target.value)}
+          onChange={(e) => setNewPass(e.target.value)}
         />
 
         <div className="rpm-actions">

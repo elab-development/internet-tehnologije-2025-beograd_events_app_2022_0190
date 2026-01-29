@@ -98,16 +98,21 @@ initEvents();
 /**
  * Vraća sve događaje
  */
-export const getAllEvents = () => {
-  return JSON.parse(localStorage.getItem(EVENTS_KEY)) || [];
+
+const API_URL = "http://localhost:5000/api/dogadjaji";
+
+export const getAllEvents = async () => {
+  const response = await fetch("http://localhost:5000/api/dogadjaji");
+  return response.json();
 };
+
 
 /**
  * Vraća događaj po ID-u
  */
-export const getEventById = (id) => {
-  const events = JSON.parse(localStorage.getItem(EVENTS_KEY)) || [];
-  return events.find(e => e.id === Number(id));
+export const getEventById = async(id) => {
+  const response = await fetch("http://localhost:5000/api/dogadjaji/"+id);
+  return response.json();
 };
 
 

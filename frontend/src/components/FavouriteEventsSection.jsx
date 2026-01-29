@@ -1,54 +1,53 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/favouriteSection.css";
-import { getEventById } from "../services/eventService.js";
-import { getPrivateEventById } from "../services/privateEventService.js";
-
 
 function FavouriteEventsSection() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("loggedUser"));
-  const data =
-    JSON.parse(localStorage.getItem("favouriteEvents")) || {};
 
-  const favourites = data[user.email] || [];
+  const [favourites, setFavourites] = useState([]);
 
-  if (favourites.length === 0) return null;
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchFavourites = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/omiljeni/korisnik/${user.id}`
+        );
+        const data = await res.json();
+        setFavourites(data);
+      } catch (err) {
+        console.error("Greška pri učitavanju omiljenih", err);
+      }
+    };
+
+    fetchFavourites();
+  }, [user]);
+
+  if (!user || favourites.length === 0) return null;
 
   return (
     <div className="fav-section">
       <h2>Omiljeni događaji</h2>
 
       <div className="events-grid">
-      {favourites.map(f => {
-  let event = null;
-  let route = "";
+        {favourites.map(f => (
+          <div
+            key={`fav-${f.dogadjaj_id}`}
+            className="event-card"
+            onClick={() =>
+              navigate(`/events/public/${f.dogadjaj_id}`)
+            }
+          >
+            <div className="event-title">
+              {f.dogadjaj.naziv}
+            </div>
 
-  if (f.eventType === "PRIVATE") {
-    event = getPrivateEventById(f.eventId);
-    route = `/events/private/${f.eventId}`;
-  } else {
-    // sve ostalo je PUBLIC
-    event = getEventById(f.eventId);
-    route = `/events/public/${f.eventId}`;
-  }
-
-  if (!event) return null;
-
-  return (
-    <div
-      key={`${f.eventType ?? "PUBLIC"}-${f.eventId}`}
-      className="event-card"
-      onClick={() => navigate(route)}
-    >
-      <div className="event-title">
-        {event.naziv}
-      </div>
-    </div>
-  );
-})}
-
-
-
+           
+          </div>
+        ))}
       </div>
     </div>
   );

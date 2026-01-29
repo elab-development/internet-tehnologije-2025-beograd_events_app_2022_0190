@@ -3,20 +3,41 @@ import "../styles/userPanel.css";
 
 function UserPanel({ user, onUpdate }) {
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({ ...user });
   const [confirm, setConfirm] = useState(false);
 
-  const handleSave = () => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+  // ⬇️ koristi backend polja
+  const [form, setForm] = useState({
+    ime: user.ime,
+    prezime: user.prezime,
+    email: user.email,
+    lozinka: user.lozinka,
+    uloga: user.uloga,
+  });
 
-    const updated = users.map(u =>
-      u.email === user.email ? form : u
-    );
+  const handleSave = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/korisnici/${user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
 
-    localStorage.setItem("users", JSON.stringify(updated));
-    alert("Korisnik je uspešno ažuriran!");
-    setConfirm(false);
-    onUpdate();
+      if (!response.ok) {
+        alert("Greška pri ažuriranju korisnika");
+        return;
+      }
+
+      alert("Korisnik je uspešno ažuriran!");
+      setConfirm(false);
+      onUpdate(); // 🔄 ponovo povlači korisnike iz baze
+    } catch (error) {
+      alert("Backend nije dostupan");
+    }
   };
 
   return (
@@ -25,63 +46,72 @@ function UserPanel({ user, onUpdate }) {
         className="user-panel-header"
         onClick={() => setOpen(!open)}
       >
-        <span>{user.name} {user.surname}</span>
+        <span>{user.ime} {user.prezime}</span>
         <span className={`arrow ${open ? "open" : ""}`}>⌄</span>
       </div>
 
       {open && (
-  <div className="user-panel-body">
+        <div className="user-panel-body">
 
-    <label>Ime</label>
-    <input
-      type="text"
-      value={form.name}
-      onChange={e => setForm({ ...form, name: e.target.value })}
-    />
+          <label>Ime</label>
+          <input
+            type="text"
+            value={form.ime}
+            onChange={(e) =>
+              setForm({ ...form, ime: e.target.value })
+            }
+          />
 
-    <label>Prezime</label>
-    <input
-      type="text"
-      value={form.surname}
-      onChange={e => setForm({ ...form, surname: e.target.value })}
-    />
+          <label>Prezime</label>
+          <input
+            type="text"
+            value={form.prezime}
+            onChange={(e) =>
+              setForm({ ...form, prezime: e.target.value })
+            }
+          />
 
-    <label>Email</label>
-    <input
-      type="text"
-      value={form.email}
-      onChange={e => setForm({ ...form, email: e.target.value })}
-    />
+          <label>Email</label>
+          <input
+            type="text"
+            value={form.email}
+            onChange={(e) =>
+              setForm({ ...form, email: e.target.value })
+            }
+          />
 
-    <label>Lozinka</label>
-    <input
-      type="text"
-      value={form.password}
-      onChange={e => setForm({ ...form, password: e.target.value })}
-    />
+          <label>Lozinka</label>
+          <input
+            type="text"
+            value={form.lozinka}
+            onChange={(e) =>
+              setForm({ ...form, lozinka: e.target.value })
+            }
+          />
 
-    <label>Uloga</label>
-    <input
-      type="text"
-      value={form.uloga}
-      onChange={e => setForm({ ...form, uloga: e.target.value })}
-    />
+          <label>Uloga</label>
+          <input
+            type="text"
+            value={form.uloga}
+            onChange={(e) =>
+              setForm({ ...form, uloga: e.target.value })
+            }
+          />
 
-    <button onClick={() => setConfirm(true)}>
-      Ažuriraj
-    </button>
+          <button onClick={() => setConfirm(true)}>
+            Ažuriraj
+          </button>
 
-    {confirm && (
-      <div className="confirm-box">
-        <p>Da li ste sigurni da želite da ažurirate korisnika?</p>
-        <button onClick={handleSave}>Da</button>
-        <button onClick={() => setConfirm(false)}>Ne</button>
-      </div>
-    )}
+          {confirm && (
+            <div className="confirm-box">
+              <p>Da li ste sigurni da želite da ažurirate korisnika?</p>
+              <button onClick={handleSave}>Da</button>
+              <button onClick={() => setConfirm(false)}>Ne</button>
+            </div>
+          )}
 
-  </div>
-)}
-
+        </div>
+      )}
     </div>
   );
 }

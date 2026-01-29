@@ -101,3 +101,14 @@ def dodaj_omiljeni():
         "dogadjaj_id": dogadjaj_id,
         "podsetnik": str(podsetnik)
     }), 201
+
+@omiljeni_bp.route("/<int:korisnik_id>/<int:dogadjaj_id>", methods=["DELETE"])
+def obrisi_omiljeni(korisnik_id, dogadjaj_id):
+    o = OmiljeniDogadjaj.query.get_or_404(
+        (korisnik_id, dogadjaj_id)
+    )
+
+    db.session.delete(o)
+    db.session.commit()
+
+    return jsonify({"poruka": "Dogadjaj uklonjen iz omiljenih"})

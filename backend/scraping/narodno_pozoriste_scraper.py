@@ -117,6 +117,9 @@ def run_narodno_scraping():
         image_url = img_el.get("src") if img_el else None
         if image_url and image_url.startswith("/"):
             image_url = "https://www.narodnopozoriste.rs" + image_url
+        
+        if not image_url:
+            continue
 
         # DUPLIKATI
         postoji = Dogadjaj.query.filter_by(

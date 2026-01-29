@@ -2,8 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import {
   createPrivateEvent,
   getPrivateEventsForUser,
-  deletePrivateEvent
+  deletePrivateEvent,
+  getAllPrivateEvents
 } from "../services/privateEventService.js";
+
 import {
   getAllCategories,
   createCategory
@@ -22,7 +24,6 @@ function PrivateEvents() {
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [newCategory, setNewCategory] = useState("");
 
   const scrollRef = useRef(null);
 
@@ -39,23 +40,38 @@ function PrivateEvents() {
   useEffect(() => {
     if (!loggedUser) return;
 
-    setEvents(getPrivateEventsForUser(loggedUser));
-    setCategories(getAllCategories());
-  }, []);
+    const fetchData = async () => {
+      // 👇 privatni događaji iz BAZE
+      const privateEvents = await getAllPrivateEvents();
+      const myEvents = privateEvents.filter(
+        e => e.korisnik_id === loggedUser.id
+      );
+      setEvents(myEvents);
+
+      // 👇 kategorije iz BAZE
+      const cats = await getAllCategories();
+      setCategories(cats);
+    };
+
+    fetchData();
+  }, [loggedUser]);
+
 
   if (!loggedUser) {
     return <h2>Morate biti prijavljeni</h2>;
   }
 
-  const handleCreate = () => {
-    const result = createPrivateEvent(form, loggedUser);
+  const handleCreate = async () => {
+    const result = await createPrivateEvent(form, loggedUser);
 
     if (!result.success) {
       alert(result.message);
       return;
     }
 
-    setEvents(getPrivateEventsForUser(loggedUser));
+    const refreshed = await getAllPrivateEvents();
+    setEvents(refreshed.filter(e => e.korisnik_id === loggedUser.id));
+
     setForm({
       naziv: "",
       opis: "",
@@ -66,11 +82,16 @@ function PrivateEvents() {
     });
   };
 
-  const handleDelete = (id) => {
+
+  const handleDelete = async (id) => {
     if (!window.confirm("Da li ste sigurni?")) return;
-    deletePrivateEvent(id, loggedUser);
-    setEvents(getPrivateEventsForUser(loggedUser));
+
+    await deletePrivateEvent(id);
+
+    const refreshed = await getAllPrivateEvents();
+    setEvents(refreshed.filter(e => e.korisnik_id === loggedUser.id));
   };
+
 
   const scrollLeft = () => {
     scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
@@ -138,38 +159,9 @@ function PrivateEvents() {
             ))}
           </select>
 
-          <input
-            placeholder="Nova kategorija (ako ne postoji)"
-            value={newCategory}
-            onChange={e => setNewCategory(e.target.value)}
-          />
+          
 
-          <button
-            type="button"
-            onClick={() => {
-              const result = createCategory(newCategory);
-
-              if (!result.success) {
-                alert(result.message);
-                return;
-              }
-
-              const updatedCategories = getAllCategories();
-              setCategories(updatedCategories);
-
-              const created = updatedCategories.find(
-                c => c.naziv.toLowerCase() === newCategory.trim().toLowerCase()
-              );
-
-              if (created) {
-                setForm({ ...form, categoryId: created.id });
-              }
-
-              setNewCategory("");
-            }}
-          >
-            Dodaj kategoriju
-          </button>
+          
 
           <button onClick={handleCreate}>
             Kreiraj privatni događaj
@@ -230,8 +222,9 @@ function PrivateEvents() {
           event={selectedEvent}
           loggedUser={loggedUser}
           onClose={() => setShowModal(false)}
-          onSave={() => {
-            setEvents(getPrivateEventsForUser(loggedUser));
+          onSave={async () => {
+            const refreshed = await getAllPrivateEvents();
+            setEvents(refreshed.filter(e => e.korisnik_id === loggedUser.id));
             setShowModal(false);
           }}
         />

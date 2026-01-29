@@ -9,7 +9,9 @@ class PrivatniDogadjaj(db.Model):
     datum = db.Column(db.Date, nullable=False)
     lokacija = db.Column(db.String(100), nullable=False)
     kapacitet = db.Column(db.Integer, nullable=False)
-
+    
+    imageURL = db.Column(db.String(255), nullable=False)
+    
     korisnik_id = db.Column(
         db.Integer,
         db.ForeignKey("korisnik.id"),

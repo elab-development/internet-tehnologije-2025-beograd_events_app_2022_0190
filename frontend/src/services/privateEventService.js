@@ -1,80 +1,57 @@
-const KEY = "privateEvents";
+const API_URL = "http://localhost:5000/api/privatni-dogadjaji";
 
-const getAll = () => {
-  return JSON.parse(localStorage.getItem(KEY)) || [];
+/* SVI PRIVATNI */
+export const getAllPrivateEvents = async () => {
+  const res = await fetch(API_URL);
+  return res.json();
 };
 
-export const getPrivateEventsForUser = (user) => {
-    if (!user) return [];
-  
-    const events = JSON.parse(localStorage.getItem("privateEvents")) || [];
-  
-    // ❌ admin nema posebna prava
-    return events.filter(
-      e => e.user && e.user.email === user.email
-    );
-  };
-  
-  
+/* JEDAN PRIVATNI */
+export const getPrivateEventById = async (id) => {
+  const res = await fetch(`${API_URL}/${id}`);
+  return res.json();
+};
 
-export const createPrivateEvent = (data, user) => {
+/* KREIRANJE */
+export const createPrivateEvent = async (data, user) => {
   if (!user) {
     return { success: false, message: "Morate biti prijavljeni" };
   }
 
-  const events = getAll();
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      naziv: data.naziv,
+      opis: data.opis,
+      datum: data.datum,
+      lokacija: data.lokacija,
+      kapacitet: data.kapacitet,
+      korisnik_id: user.id,
+      imageURL:
+        "https://alvasshowroom.com/wp-content/uploads/2018/08/Private-event-image.jpg"
+    })
+  });
 
-  const newEvent = {
-    id: events.length ? Math.max(...events.map(e => e.id)) + 1 : 1,
-    ...data,
-    imageURL:
-      "https://alvasshowroom.com/wp-content/uploads/2018/08/Private-event-image.jpg",
-    user: {
-      name: user.name,
-      surname: user.surname,
-      email: user.email
-    },
-    eventType: "PRIVATE" // 👈 KLJUČNA LINIJA
-  };
-  
-
-  events.push(newEvent);
-  localStorage.setItem(KEY, JSON.stringify(events));
+  if (!res.ok) {
+    return { success: false, message: "Greška pri kreiranju" };
+  }
 
   return { success: true };
 };
 
-export const deletePrivateEvent = (id, user) => {
-    if (!user) return;
-  
-    const events = JSON.parse(localStorage.getItem("privateEvents")) || [];
-    const event = events.find(e => e.id === id);
-  
-    // ❌ samo kreator
-    if (!event || event.user.email !== user.email) return;
-  
-    const filtered = events.filter(e => e.id !== id);
-    localStorage.setItem("privateEvents", JSON.stringify(filtered));
-  };
-  
+/* BRISANJE */
+export const deletePrivateEvent = async (id) => {
+  await fetch(`${API_URL}/${id}`, {
+    method: "DELETE"
+  });
+};
 
-  export const updatePrivateEvent = (updatedEvent, user) => {
-    const events = JSON.parse(localStorage.getItem("privateEvents")) || [];
-    const index = events.findIndex(e => e.id === updatedEvent.id);
-  
-    if (index === -1) return;
-  
-    // ❌ samo kreator
-    if (events[index].user.email !== user.email) return;
-  
-    events[index] = updatedEvent;
-    localStorage.setItem("privateEvents", JSON.stringify(events));
-  };
-  
-export const getAllPrivateEvents = () => {
-    return JSON.parse(localStorage.getItem("privateEvents")) || [];
-  };
-  export const getPrivateEventById = (id) => {
-    const events = JSON.parse(localStorage.getItem("privateEvents")) || [];
-    return events.find(e => e.id === Number(id));
-  };
+/* AŽURIRANJE */
+export const updatePrivateEvent = async (event) => {
+  await fetch(`${API_URL}/${event.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(event)
+  });
+};

@@ -35,14 +35,15 @@ function PrivateEventModal({ event, onClose, onSave, loggedUser }) {
           }
         />
 
-        <label>Datum</label>
         <input
-          type="date"
-          value={form.datum}
-          onChange={e =>
-            setForm({ ...form, datum: e.target.value })
-          }
-        />
+  type="date"
+  value={form.datum}
+  onChange={e =>
+    setForm({ ...form, datum: e.target.value })
+  }
+/>
+
+          
 
         <label>Lokacija</label>
         <input
