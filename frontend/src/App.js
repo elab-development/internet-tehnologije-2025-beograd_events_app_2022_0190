@@ -8,12 +8,12 @@ import Categories from "./pages/Categories.jsx";
 import PrivateEvents from "./pages/privateEvent.jsx";
 import UserProfile from "./pages/UserProfile";
 import UsersPage from "./pages/UsersPage";
+import Footer from "./components/Footer.jsx";
 
 
 function AppContent() {
   const location = useLocation();
 
-  // ❌ nema menija na login i register
   const hideNavbar =
     location.pathname === "/" ||
     location.pathname === "/register";
@@ -36,6 +36,7 @@ function AppContent() {
 
 
       </Routes>
+       {!hideLayout && <Footer />}
     </>
   );
 }

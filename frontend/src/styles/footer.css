@@ -1,0 +1,39 @@
+.app-footer {
+  background-color: rgb(63, 102, 84);
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 14px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-brand h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.footer-brand p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.footer-autori {
+  text-align: right;
+}
+
+.footer-autori p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.9;
+}
