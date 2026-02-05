@@ -4,10 +4,12 @@ from app.models import Dogadjaj
 
 dogadjaj_bp = Blueprint("dogadjaj", __name__, url_prefix="/api/dogadjaji")
 
+from datetime import date
 
 @dogadjaj_bp.route("", methods=["GET"])
 def svi_dogadjaji():
-    dogadjaji = Dogadjaj.query.all()
+    danas = date.today()
+    dogadjaji = Dogadjaj.query.filter(Dogadjaj.datum > danas).all()
     return jsonify([
         {
             "id": d.id,

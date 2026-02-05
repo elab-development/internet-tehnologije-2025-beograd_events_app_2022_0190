@@ -29,10 +29,6 @@ MESECI = {
 }
 
 
-# ---------------------------------------------------
-# Pomocna funkcija – parsiranje datuma
-# Primer: "23.01.2026"
-# ---------------------------------------------------
 from datetime import date
 
 def parse_datum_iz_repertoara(entry):
@@ -43,18 +39,13 @@ def parse_datum_iz_repertoara(entry):
     </div>
     """
     try:
-        #print(entry)
         date_div = entry.select_one("div.repertoarwide-entry-date")
         if not date_div:
             
             return None
 
-        # DAN (npr. 26)
         dan_text = date_div.contents[1]
-        #print(dan_text)
         dan = int(str(dan_text).strip())
-        #print(dan)
-        # MESEC (npr. јан)
         mesec_el = date_div.select_one("span.mesec")
         if not mesec_el:
             return None
@@ -70,11 +61,6 @@ def parse_datum_iz_repertoara(entry):
     except:
         return None
 
-
-
-# ---------------------------------------------------
-# GLAVNA FUNKCIJA
-# ---------------------------------------------------
 def run_narodno_scraping():
     print("Scraping Narodno pozorište")
 
@@ -89,17 +75,13 @@ def run_narodno_scraping():
     dodato = 0
 
     for entry in entries:
-        # DATUM
         datum = parse_datum_iz_repertoara(entry)
 
         if not datum:
-            #print("do datuma je")
             continue
 
-        # NASLOV + SOURCE URL
         title_link = entry.select_one("div.entry-title a")
         if not title_link:
-            #print("do naslova je")
             continue
 
         naziv = title_link.get_text(strip=True)
@@ -108,11 +90,9 @@ def run_narodno_scraping():
         if source_url.startswith("/"):
             source_url = "https://www.narodnopozoriste.rs" + source_url
 
-        # OPIS
         opis_el = entry.select_one("div.entry-title em")
         opis = opis_el.get_text(strip=True) if opis_el else ""
 
-        # SLIKA
         img_el = entry.select_one("img.img-fluid.donottouch")
         image_url = img_el.get("src") if img_el else None
         if image_url and image_url.startswith("/"):
@@ -121,7 +101,6 @@ def run_narodno_scraping():
         if not image_url:
             continue
 
-        # DUPLIKATI
         postoji = Dogadjaj.query.filter_by(
             naziv=naziv,
             datum=datum
@@ -130,7 +109,6 @@ def run_narodno_scraping():
         if postoji:
             continue
 
-        # UPIS U BAZU
         dogadjaj = Dogadjaj(
             naziv=naziv,
             opis=opis,

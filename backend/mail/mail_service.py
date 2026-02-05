@@ -46,4 +46,4 @@ BG Events
         print(f"Email poslat: {to_email}")
 
     except Exception as e:
-        print(f"❌ Greška pri slanju maila ({to_email}):", e)
+        print(f"Greška pri slanju maila ({to_email}):", e)

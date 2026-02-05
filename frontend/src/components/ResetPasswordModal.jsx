@@ -8,14 +8,12 @@ function ResetPasswordModal({ onClose }) {
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
   const handleReset = async () => {
-    // ✅ provera stare lozinke (kao i ranije)
     if (loggedUser.lozinka !== oldPass) {
       alert("Stara lozinka nije ispravna!");
       return;
     }
 
     try {
-      // ✅ PUT ka backendu
       const response = await fetch(
         `http://localhost:5000/api/korisnici/${loggedUser.id}`,
         {
@@ -34,7 +32,6 @@ function ResetPasswordModal({ onClose }) {
         return;
       }
 
-      // ✅ osvežavamo localStorage loggedUser
       const updatedUser = {
         ...loggedUser,
         lozinka: newPass,

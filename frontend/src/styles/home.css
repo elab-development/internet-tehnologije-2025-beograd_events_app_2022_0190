@@ -5,7 +5,6 @@ html, body {
 }
 
 
-/* ===== HERO (BORDO) SEKCIJA ===== */
 .hero-section {
   background: linear-gradient(135deg,rgba(10, 83, 49, 0.75), rgba(10, 83, 49, 0.75));
   padding: 150px 24px 120px;
@@ -26,20 +25,17 @@ html, body {
   
 }
 
-/* ===== RAZMAK KAO NA PRIMERU ===== */
 .events-grid-wrapper {
   margin-top: -60px;
   padding: 0 54px;
 }
 
-/* ===== GRID OSTAVLJAMO ISTI ===== */
 .events-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
-/* ===== EVENT CARD (VEĆ POSTOJEĆI DIZAJN) ===== */
 .event-card {
   cursor: pointer;
   background: rgba(58, 85, 73, 0.75);
@@ -103,7 +99,6 @@ html, body {
   text-align: center;
 }
 
-/* ===== LOADER OSTAVLJEN ===== */
 .loader-center {
   height: 100vh;
   display: flex;
@@ -125,7 +120,6 @@ html, body {
     transform: rotate(360deg);
   }
 }
-/* ===== SEARCH BAR ===== */
 .search-container {
   position: absolute;
   right: 40px;

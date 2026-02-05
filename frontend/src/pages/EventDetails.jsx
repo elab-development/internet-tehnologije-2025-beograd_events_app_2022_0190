@@ -40,7 +40,6 @@ function EventDetails() {
 
       setEvent(foundEvent);
 
-      // ⚠️ ako ti više ne koristiš kategorije, može i da ostane null
       if (foundEvent?.categoryId) {
         const cat = await getCategoryById(foundEvent.categoryId);
         setCategory(cat);
@@ -160,7 +159,7 @@ function EventDetails() {
               </p>
             )}
 
-            {/* LINK ZA KUPVINU KARTE – SAMO ZA JAVNE DOGAĐAJE */}
+            {}
             {event.sourceURL && (
               <p className="ed-ticket-link">
                 Kartu za ovaj događaj možete kupiti{" "}

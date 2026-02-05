@@ -9,7 +9,6 @@ class Korisnik(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     lozinka = db.Column(db.String(255), nullable=False)
     uloga = db.Column(db.String(20), nullable=False)
-    # gost | korisnik | admin
 
     privatni_dogadjaji = db.relationship(
         "PrivatniDogadjaj",

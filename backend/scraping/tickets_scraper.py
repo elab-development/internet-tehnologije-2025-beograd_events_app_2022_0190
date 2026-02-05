@@ -49,9 +49,6 @@ def scrape_detail_page(url):
             return None, None, ""
         
         opis = ""
-        #opis = scrape_opis_bez_seleniuma(url)   
-        
-        # DATUM + CENA
         datum = None
         cena = None
 
@@ -59,7 +56,6 @@ def scrape_detail_page(url):
         if item:
             text = item.get_text(" ", strip=True).lower()
 
-            # DATUM
             for mesec, broj in MESECI.items():
                 if mesec in text:
                     try:
@@ -75,7 +71,7 @@ def scrape_detail_page(url):
             cena_item = soup.select_one(".price")
             if cena_item:
                 text = cena_item.get_text(" ", strip=True).lower()
-            # CENA
+            
             if "rsd" in text:
                 try:
                     broj = (
@@ -120,15 +116,9 @@ def run_scraping():
     soup = BeautifulSoup(r.text, "html.parser")
    
     slides = soup.select(".swiper-slide")
-    #print(f"➡️ Tickets: pronađeno {len(slides)} događaja")
     dodato = 0
-    #print("DEBUG: tickets.rs status:", r.status_code)
-    #print("DEBUG: tickets.rs html length:", len(r.text))
-    #slides = soup.select(".swiper-slide")
-    #print("DEBUG: broj swiper-slide:", len(slides))
     for slide in slides:
         eventi = slide.select('a[href^="/tour/"]')
-        #print("DEBUG: eventi u slide:", len(eventi))
         for e in eventi:
             naziv_el = e.select_one("h3")
             datum_el = e.select_one(".date-time")
@@ -139,13 +129,11 @@ def run_scraping():
                 continue
 
             naziv = naziv_el.get_text(strip=True)
-            #datum = parse_datum(datum_el.get_text())
             lokacija = lokacija_el.get_text(strip=True)
 
            
 
 
-            #cena = parse_cena(cena_el.get_text()) if cena_el else None
 
             image_url = None
             style = e.get("style", "")
@@ -174,7 +162,7 @@ def run_scraping():
 
             dogadjaj = Dogadjaj(
                 naziv=naziv,
-                opis="Za vise detalja posetite sajt"+source_url,
+                opis="Za vise detalja posetite sajt "+source_url,
                 datum=datum,
                 lokacija=lokacija,
                 cena=cena,

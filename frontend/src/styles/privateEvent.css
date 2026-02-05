@@ -1,13 +1,10 @@
-/* ===============================
-   PRIVATE EVENTS – PAGE
-================================ */
+
 
 .pe-page {
   background: #f4f6f5;
   min-height: 100vh;
 }
 
-/* ===== HERO ISPOD NAVBARA ===== */
 .pe-hero {
   margin-top: 120px;
   padding: 70px 30px;
@@ -82,14 +79,12 @@ animation:
   opacity: 0.85;
 }
 
-/* ===== CONTAINER ===== */
 .pe-container {
   max-width: 1200px;
   margin: auto;
   padding: 40px 20px;
 }
 
-/* ===== FORMA ===== */
 .pe-form {
   background: white;
   padding: 30px;
@@ -136,7 +131,6 @@ animation:
   transform: translateY(-2px);
 }
 
-/* ===== MOJI DOGAĐAJI ===== */
 .pe-my-title {
   font-size: 30px;
   margin: 40px 0 20px;
@@ -157,7 +151,6 @@ animation:
 
 
 
-/* ===== ZELENI PANEL ===== */
 .pe-my-wrapper {
   background: #e7f3ee;
   padding: 20px;
@@ -165,7 +158,6 @@ animation:
   position: relative;
 }
 
-/* ===== HORIZONTALNI SCROLL ===== */
 .pe-events-row {
   display: flex;
   gap: 20px;
@@ -182,7 +174,6 @@ animation:
   border-radius: 10px;
 }
 
-/* ===== EVENT CARD (PRIVATE) ===== */
 .pe-card {
   min-width: 260px;
   background: white;
@@ -208,14 +199,12 @@ animation:
   margin: 6px 0;
 }
 
-/* ===== AKCIJE ===== */
 .pe-actions {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
 }
 
-/* ===== STRELICE ===== */
 .pe-arrow {
   background: #1f6b4d;
   color: white;
@@ -251,7 +240,6 @@ animation:
 
 
 
-/* ===== ANIMACIJE ===== */
 @keyframes peFadeDown {
   from {
     opacity: 0;
@@ -311,12 +299,10 @@ animation:
     transform: translateY(10px) scale(1);
   }
 }
-/* ===== CARD MENU (⋮) ===== */
 .pe-card {
   position: relative;
 }
 
-/* dugme ⋮ */
 .pe-card-menu {
   position: absolute;
   top: 10px;
@@ -331,8 +317,6 @@ animation:
   font-size: 18px;
   cursor: pointer;
 }
-
-/* dropdown */
 .menu-dropdown {
   position: absolute;
   top: 30px;
@@ -347,12 +331,10 @@ animation:
   overflow: hidden;
 }
 
-/* hover otvara meni */
 .pe-card-menu:hover .menu-dropdown {
   display: flex;
 }
 
-/* stavke menija */
 .menu-dropdown button {
   background: none;
   border: none;
@@ -366,7 +348,6 @@ animation:
   background: #f0f5f2;
 }
 
-/* delete naglašeno */
 .menu-dropdown .danger {
   color: #000000;
 }
@@ -379,7 +360,6 @@ animation:
 
 
 
-/* ===== INPUT HOVER EFEKAT ===== */
 .pe-form input,
 .pe-form textarea,
 .pe-form select {
@@ -389,7 +369,6 @@ animation:
     border-color 0.25s ease;
 }
 
-/* hover */
 .pe-form input:hover,
 .pe-form textarea:hover,
 .pe-form select:hover {
@@ -398,7 +377,6 @@ animation:
   border-color: #1f8a63;
 }
 
-/* focus (klik) */
 .pe-form input:focus,
 .pe-form textarea:focus,
 .pe-form select:focus {
@@ -414,7 +392,6 @@ animation:
   position: relative;
 }
 
-/* zelena aura ispod forme */
 .pe-form::before {
   content: "";
   position: absolute;

@@ -6,7 +6,7 @@ function Footer() {
       <div className="footer-content">
 
         <div className="footer-brand">
-        {/* <img src="/Logo.png" alt="BG Events logo" /> */}
+        {}
 
           <h3>BG Events</h3>
           <p>Sva dešavanja u Beogradu na jednom mestu</p>

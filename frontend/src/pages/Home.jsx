@@ -20,25 +20,9 @@
     const [searchTerm, setSearchTerm] = useState("");
     const [allEvents, setAllEvents] = useState([]);
 
-    
-
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       const publicEvents = getAllEvents();
-  //       const privateEvents = getAllPrivateEvents();
-
-
-  //       const data = [...privateEvents, ...publicEvents];
-  //       setAllEvents(data);
-  // setEvents(data);
-
-  //       setLoading(false);
-  //     }, 2000);
-  //   }, []);
-
     useEffect(() => {
     setTimeout(async () => {
-      const publicEvents = await getAllEvents(); // 👈 JEDINA BITNA PROMENA
+      const publicEvents = await getAllEvents();
       const privateEvents = await getAllPrivateEvents();
 
       const data = [...privateEvents, ...publicEvents];
@@ -67,7 +51,7 @@
 
     return (
       <div className="home-container">
-        {/* 🔴 BORDO HERO SEKCIJA */}
+        {}
         <div className="hero-section">
     <h1>Događaji u Beogradu...</h1>
 

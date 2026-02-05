@@ -15,7 +15,6 @@ import "../styles/privateEvent.css";
 
 function PrivateEvents() {
 
-  // ✅ loggedUser se učitava JEDNOM
   const [loggedUser] = useState(() =>
     JSON.parse(localStorage.getItem("loggedUser"))
   );
@@ -36,19 +35,16 @@ function PrivateEvents() {
     categoryId: ""
   });
 
-  // ✅ useEffect BEZ petlje
   useEffect(() => {
     if (!loggedUser) return;
 
     const fetchData = async () => {
-      // 👇 privatni događaji iz BAZE
       const privateEvents = await getAllPrivateEvents();
       const myEvents = privateEvents.filter(
         e => e.korisnik_id === loggedUser.id
       );
       setEvents(myEvents);
 
-      // 👇 kategorije iz BAZE
       const cats = await getAllCategories();
       setCategories(cats);
     };
@@ -104,7 +100,7 @@ function PrivateEvents() {
   return (
     <div className="pe-page">
 
-      {/* HERO */}
+      {}
       <div className="pe-hero">
         <h1>Privatni događaj</h1>
         <p>Kreiraj i upravljaj svojim privatnim događajima</p>
@@ -112,7 +108,7 @@ function PrivateEvents() {
 
       <div className="pe-container">
 
-        {/* FORMA */}
+        {}
         <div className="pe-form">
           <h2>Kreiranje privatnog događaja</h2>
 
@@ -168,7 +164,7 @@ function PrivateEvents() {
           </button>
         </div>
 
-        {/* MOJI DOGAĐAJI */}
+        {}
         <h2 className="pe-my-title">Moji događaji</h2>
 
         <div className="pe-my-wrapper">
@@ -206,7 +202,7 @@ function PrivateEvents() {
             ))}
           </div>
 
-          {/* ✅ STRELICE ISPOD, NA SREDINI */}
+          {}
           {events.length > 3 && (
             <div className="pe-arrows-bottom">
               <button className="pe-arrow" onClick={scrollLeft}>◀</button>

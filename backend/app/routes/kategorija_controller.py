@@ -5,6 +5,7 @@ from app.models import KategorijaDogadjaja
 kategorija_bp = Blueprint("kategorija", __name__, url_prefix="/api/kategorije")
 
 
+
 @kategorija_bp.route("", methods=["GET"])
 def sve_kategorije():
     kategorije = KategorijaDogadjaja.query.all()

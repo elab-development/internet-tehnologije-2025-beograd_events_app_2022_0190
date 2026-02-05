@@ -1,8 +1,6 @@
-// 🔑 DEMO ADMIN PODACI
 const ADMIN_EMAIL = "admin@test.com";
 const ADMIN_PASSWORD = "admin123";
 
-// ✅ inicijalizacija "baze"
 const initUsers = () => {
   let users = JSON.parse(localStorage.getItem("users")) || [];
   
@@ -23,54 +21,14 @@ const initUsers = () => {
   }
 };
 
-// POZIVAMO ODMAH
-//initUsers();
 
-// export const registerUser = (user) => {
-//   const users = JSON.parse(localStorage.getItem("users")) || [];
-
-//   const userExists = users.find(u => u.email === user.email);
-//   if (userExists) {
-//     return { success: false, message: "Email već postoji!" };
-//   }
-
-//   users.push({
-//     ...user,
-//     uloga: "REGISTROVANI"
-//   });
-
-//   localStorage.setItem("users", JSON.stringify(users));
-
-//   return { success: true };
-// };
-
-// export const loginUser = (email, password) => {
-//   const users = JSON.parse(localStorage.getItem("users")) || [];
-
-//   const user = users.find(
-//     u => u.email === email && u.password === password
-//   );
-
-//   if (!user) {
-//     return { success: false, message: "Pogrešan email ili lozinka" };
-//   }
-
-//   localStorage.setItem("loggedUser", JSON.stringify(user));
-//   return { success: true };
-// };
-
-// export const logoutUser = () => {
-//   localStorage.removeItem("loggedUser");
-// };
 
 const API_URL = "http://localhost:5000/api/korisnici";
 
-/**
- * REGISTRACIJA – upis u bazu
- */
+
 export const registerUser = async (user) => {
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,41 +41,66 @@ export const registerUser = async (user) => {
       }),
     });
 
+    const data = await response.json(); 
+
     if (!response.ok) {
-      return { success: false, message: "Greška pri registraciji" };
+      return { 
+        success: false, 
+        message: data.poruka || "Greška pri registraciji" 
+      };
     }
 
-    return { success: true };
+    return { 
+      success: true, 
+      message: data.poruka 
+    };
+
   } catch (error) {
-    return { success: false, message: "Backend nije dostupan" };
+    return { 
+      success: false, 
+      message: "Backend nije dostupan" 
+    };
   }
 };
 
-/**
- * LOGIN – proveravamo korisnika iz baze
- */
-/**
- * LOGIN – proveravamo korisnika iz baze (email + lozinka)
- */
+
 export const loginUser = async (email, password) => {
   try {
-    const response = await fetch(API_URL);
-    const users = await response.json();
+    const response = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        lozinka: password,
+      }),
+    });
 
-    const user = users.find(
-      (u) => u.email === email && u.lozinka === password
-    );
+    const data = await response.json();
 
-    if (!user) {
-      return { success: false, message: "Pogrešan email ili lozinka" };
+    if (!response.ok) {
+      return {
+        success: false,
+        message: data.poruka, 
+      };
     }
 
-    localStorage.setItem("loggedUser", JSON.stringify(user));
-    return { success: true };
+    localStorage.setItem("loggedUser", JSON.stringify(data.korisnik));
+
+    return {
+      success: true,
+      message: data.poruka,
+    };
+
   } catch (error) {
-    return { success: false, message: "Backend nije dostupan" };
+    return {
+      success: false,
+      message: "Backend nije dostupan",
+    };
   }
 };
+
 
 
 export const logoutUser = () => {

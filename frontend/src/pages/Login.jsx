@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import "../styles/auth.css";
+import { useEffect } from "react";
+
 
 function Login() {
   const navigate = useNavigate();
@@ -10,6 +12,13 @@ function Login() {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+  const user = localStorage.getItem("loggedUser");
+  if (user) {
+    navigate("/home", { replace: true });
+  }
+}, []);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -66,6 +75,11 @@ function Login() {
       </button>
     </div>
   );
+
+  
 }
+
+
+
 
 export default Login;

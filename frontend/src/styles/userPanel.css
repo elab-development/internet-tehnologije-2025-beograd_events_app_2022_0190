@@ -1,6 +1,4 @@
-/* ===============================
-   USER PANEL
-================================ */
+
 
 .user-panel {
   width: 580px;
@@ -23,7 +21,6 @@
   box-shadow: 0 22px 48px rgba(0,0,0,0.28);
 }
 
-/* ===== HEADER ===== */
 .user-panel-header {
   padding: 18px 20px;
   display: flex;
@@ -34,7 +31,6 @@
   font-weight: 600;
 }
 
-/* strelica */
 .arrow {
   transition: transform 0.3s ease;
 }
@@ -43,7 +39,6 @@
   transform: rotate(180deg);
 }
 
-/* ===== BODY ===== */
 .user-panel-body {
   padding: 22px;
   display: grid;
@@ -79,7 +74,6 @@
   font-weight: 600;
 }
 
-/* potvrda */
 .confirm-box {
   grid-column: span 2;
   margin-top: 10px;

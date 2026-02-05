@@ -30,9 +30,12 @@ def kreiraj_privatni():
         "id": novi.id
     }), 201
 
+
+from datetime import date
 @privatni_bp.route("", methods=["GET"])
 def svi_privatni():
-    privatni = PrivatniDogadjaj.query.all()
+    danas = date.today()
+    privatni = PrivatniDogadjaj.query.filter(PrivatniDogadjaj.datum > danas).all()
 
     return jsonify([
         {

@@ -30,9 +30,9 @@ function AppContent() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/private-events" element={<PrivateEvents />} />
         <Route path="/events/public/:id" element={<EventDetails />} />
-<Route path="/events/private/:id" element={<EventDetails />} />
-<Route path="/user" element={<UserProfile />} />
-<Route path="/users" element={<UsersPage />} />
+        <Route path="/events/private/:id" element={<EventDetails />} />
+        <Route path="/user" element={<UserProfile />} />
+        <Route path="/users" element={<UsersPage />} />
 
 
       </Routes>

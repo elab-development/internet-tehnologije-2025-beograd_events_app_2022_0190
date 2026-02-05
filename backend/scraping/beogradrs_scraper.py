@@ -19,9 +19,6 @@ HEADERS = {
 }
 
 
-# ---------------------------------------------------
-# Pomocna funkcija – cist opis iz detaljne stranice
-# ---------------------------------------------------
 def scrape_opis(detail_url):
     try:
         r = requests.get(detail_url, headers=HEADERS, timeout=15)
@@ -45,12 +42,7 @@ import re
 from datetime import datetime
 
 def extract_datum_from_opis(opis):
-    """
-    Traži 'Kada se održava' u opisu i uzima prvi datum.
-    Primeri koje hvata:
-    - 1. januar
-    - 25. 26. i 27. mart
-    """
+    
     try:
         if not opis:
             return None
@@ -62,7 +54,6 @@ def extract_datum_from_opis(opis):
 
         deo = tekst.split("kada se održava", 1)[1]
 
-        # uzimamo prvi broj (dan)
         dan_match = re.search(r"\b(\d{1,2})\b", deo)
         if not dan_match:
             return None
@@ -102,7 +93,6 @@ def extract_lokacija_from_opis(opis):
 
         deo = tekst.split("Gde se održava", 1)[1]
 
-        # uzimamo prvu liniju posle toga
         linija = deo.strip().split("\n")[0].strip()
 
         return linija if linija else ""
@@ -112,9 +102,6 @@ def extract_lokacija_from_opis(opis):
 
 
 
-# ---------------------------------------------------
-# GLAVNA FUNKCIJA
-# ---------------------------------------------------
 def run_beograd_scraping():
     print("Scraping beograd.rs manifestacije...")
 
@@ -131,7 +118,6 @@ def run_beograd_scraping():
         print(f"Beograd.rs: Stranica {page}: pronađeno {len(cards)} događaja")
 
         for card in cards:
-            # LINK
             link_el = card.select_one("a.simple-news-card__link")
 
             if not link_el:
@@ -139,29 +125,24 @@ def run_beograd_scraping():
 
             source_url = BASE_URL + link_el["href"]
 
-            # NASLOV
             title_el = card.select_one("h2.simple-news-card__title")
             naziv = title_el.get_text(strip=True) if title_el else None
             if not naziv:
                 continue
             
-            # SLIKA
             img_el = card.select_one("img.image")
             image_url = img_el["src"] if img_el and img_el.get("src") else None
             if image_url and image_url.startswith("/"):
                 image_url = BASE_URL + image_url
 
-            # LOKACIJA + DATUM
             lokacija = ""
             datum = ""
 
-           # OPIS (DETALJNA STRANA)
             opis = scrape_opis(source_url)
 
             datum = extract_datum_from_opis(opis)
             lokacija = extract_lokacija_from_opis(opis)
             
-            # PROVERA DUPLIKATA
             with db.session.no_autoflush:
                 postoji = Dogadjaj.query.filter(
                     or_(
@@ -173,10 +154,6 @@ def run_beograd_scraping():
             if postoji:
                 continue
 
-
-            
-
-            # UPIS U BAZU
             dogadjaj = Dogadjaj(
                 naziv=naziv,
                 opis=opis,

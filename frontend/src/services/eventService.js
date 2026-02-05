@@ -1,13 +1,6 @@
 const EVENTS_KEY = "events";
 
-/**
- * Inicijalni mock podaci
- * categoryId:
- * 1 - Koncert
- * 2 - Pozorište
- * 3 - Sport
- * 4 - Festival
- */
+
 const initialEvents = [
   {
     id: 1,
@@ -79,15 +72,7 @@ const initialEvents = [
   }
 ];
 
-/**
- * Ako nema događaja u localStorage – upisujemo mock podatke
- */
-// const initEvents = () => {
-//   const events = JSON.parse(localStorage.getItem(EVENTS_KEY));
-//   if (!events) {
-//     localStorage.setItem(EVENTS_KEY, JSON.stringify(initialEvents));
-//   }
-// };
+
 
 const initEvents = () => {
   localStorage.setItem(EVENTS_KEY, JSON.stringify(initialEvents));
@@ -95,9 +80,7 @@ const initEvents = () => {
 
 initEvents();
 
-/**
- * Vraća sve događaje
- */
+
 
 const API_URL = "http://localhost:5000/api/dogadjaji";
 
@@ -107,9 +90,7 @@ export const getAllEvents = async () => {
 };
 
 
-/**
- * Vraća događaj po ID-u
- */
+
 export const getEventById = async(id) => {
   const response = await fetch("http://localhost:5000/api/dogadjaji/"+id);
   return response.json();

@@ -16,7 +16,7 @@ function UsersPage() {
   }, []);
 
   const refreshUsers = () => {
-    fetchUsers(); // 👈 samo ponovo povuče iz baze
+    fetchUsers(); 
   };
 
   return (

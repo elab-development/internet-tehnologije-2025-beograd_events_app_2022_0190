@@ -12,7 +12,7 @@ function Categories() {
   const [newCategory, setNewCategory] = useState("");
 
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-
+  
   useEffect(() => {
     const fetchCategories = async () => {
       const data = await getAllCategories();

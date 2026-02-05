@@ -1,18 +1,15 @@
 const API_URL = "http://localhost:5000/api/privatni-dogadjaji";
 
-/* SVI PRIVATNI */
 export const getAllPrivateEvents = async () => {
   const res = await fetch(API_URL);
   return res.json();
 };
 
-/* JEDAN PRIVATNI */
 export const getPrivateEventById = async (id) => {
   const res = await fetch(`${API_URL}/${id}`);
   return res.json();
 };
 
-/* KREIRANJE */
 export const createPrivateEvent = async (data, user) => {
   if (!user) {
     return { success: false, message: "Morate biti prijavljeni" };
@@ -40,14 +37,12 @@ export const createPrivateEvent = async (data, user) => {
   return { success: true };
 };
 
-/* BRISANJE */
 export const deletePrivateEvent = async (id) => {
   await fetch(`${API_URL}/${id}`, {
     method: "DELETE"
   });
 };
 
-/* AŽURIRANJE */
 export const updatePrivateEvent = async (event) => {
   await fetch(`${API_URL}/${event.id}`, {
     method: "PUT",

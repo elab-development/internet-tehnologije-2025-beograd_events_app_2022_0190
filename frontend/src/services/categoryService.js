@@ -1,24 +1,18 @@
 const API_URL = "http://localhost:5000/api/kategorije";
 
-/**
- * Vraća sve kategorije
- */
+
 export const getAllCategories = async () => {
   const response = await fetch(API_URL);
   return await response.json();
 };
 
-/**
- * Vraća jednu kategoriju po ID-u
- */
+
 export const getCategoryById = async (id) => {
   const response = await fetch(`${API_URL}/${id}`);
   return await response.json();
 };
 
-/**
- * Kreira novu kategoriju
- */
+
 export const createCategory = async (naziv) => {
   const response = await fetch(API_URL, {
     method: "POST",

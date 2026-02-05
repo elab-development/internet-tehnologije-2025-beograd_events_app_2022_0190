@@ -77,3 +77,7 @@ def downgrade():
     op.drop_table('korisnik')
     op.drop_table('kategorija_dogadjaja')
     # ### end Alembic commands ###
+
+
+
+

@@ -5,7 +5,6 @@ function UserPanel({ user, onUpdate }) {
   const [open, setOpen] = useState(false);
   const [confirm, setConfirm] = useState(false);
 
-  // ⬇️ koristi backend polja
   const [form, setForm] = useState({
     ime: user.ime,
     prezime: user.prezime,
@@ -17,7 +16,7 @@ function UserPanel({ user, onUpdate }) {
   const handleSave = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/korisnici/${user.id}`,
+        `http://localhost:5000/api/korisnici/${user.id}`,3*
         {
           method: "PUT",
           headers: {
@@ -34,7 +33,7 @@ function UserPanel({ user, onUpdate }) {
 
       alert("Korisnik je uspešno ažuriran!");
       setConfirm(false);
-      onUpdate(); // 🔄 ponovo povlači korisnike iz baze
+      onUpdate(); 
     } catch (error) {
       alert("Backend nije dostupan");
     }
