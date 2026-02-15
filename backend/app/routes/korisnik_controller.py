@@ -7,21 +7,60 @@ korisnik_bp = Blueprint("korisnik", __name__, url_prefix="/api/korisnici")
 
 @korisnik_bp.route("", methods=["GET"])
 def svi_korisnici():
+    """
+    Vraća sve korisnike
+    ---
+    tags:
+      - Korisnici
+    responses:
+      200:
+        description: Lista svih korisnika
+    """
     korisnici = Korisnik.query.all()
     return jsonify([
         {
             "id": k.id,
             "ime": k.ime,
+            "prezime": k.prezime,
             "email": k.email,
-            "lozinka": k.lozinka,
-            "uloga":k.uloga,
-            "prezime":k.prezime
+            "uloga": k.uloga
         } for k in korisnici
     ])
 
 
 @korisnik_bp.route("", methods=["POST"])
 def kreiraj_korisnika():
+    """
+    Kreira novog korisnika (admin operacija)
+    ---
+    tags:
+      - Korisnici
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - ime
+            - prezime
+            - email
+            - lozinka
+          properties:
+            ime:
+              type: string
+            prezime:
+              type: string
+            email:
+              type: string
+            lozinka:
+              type: string
+            uloga:
+              type: string
+    responses:
+      201:
+        description: Korisnik uspešno kreiran
+    """
     data = request.json
     
     novi = Korisnik(
@@ -40,6 +79,22 @@ def kreiraj_korisnika():
 
 @korisnik_bp.route("/<int:id>", methods=["PUT"])
 def azuriraj_korisnika(id):
+    """
+    Ažurira podatke korisnika
+    ---
+    tags:
+      - Korisnici
+    parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+    responses:
+      200:
+        description: Korisnik uspešno ažuriran
+      404:
+        description: Korisnik ne postoji
+    """
     korisnik = Korisnik.query.get(id)
 
     if not korisnik:
@@ -60,6 +115,37 @@ def azuriraj_korisnika(id):
 
 @korisnik_bp.route("/register", methods=["POST"])
 def register():
+    """
+    Registracija novog korisnika
+    ---
+    tags:
+      - Autentikacija
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - ime
+            - prezime
+            - email
+            - lozinka
+          properties:
+            ime:
+              type: string
+            prezime:
+              type: string
+            email:
+              type: string
+            lozinka:
+              type: string
+    responses:
+      201:
+        description: Uspešna registracija
+      400:
+        description: Neispravni podaci
+    """
     data = request.json
 
     ime = data.get("ime")
@@ -96,6 +182,33 @@ def register():
 
 @korisnik_bp.route("/login", methods=["POST"])
 def login():
+    """
+    Prijava korisnika
+    ---
+    tags:
+      - Autentikacija
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - email
+            - lozinka
+          properties:
+            email:
+              type: string
+            lozinka:
+              type: string
+    responses:
+      200:
+        description: Uspešna prijava
+      400:
+        description: Pogrešni podaci
+      404:
+        description: Korisnik ne postoji
+    """
     data = request.json
 
     email = data.get("email")
@@ -112,9 +225,6 @@ def login():
     if korisnik.lozinka != lozinka:
         return jsonify({"poruka": "Pogrešna lozinka"}), 400
 
-    if not lozinka or len(lozinka) < 5:
-        return jsonify({"poruka": "Lozinka mora imati minimum 5 karaktera"}), 400
-
     return jsonify({
         "poruka": "Uspešno prijavljivanje",
         "korisnik": {
@@ -122,7 +232,6 @@ def login():
             "ime": korisnik.ime,
             "prezime": korisnik.prezime,
             "email": korisnik.email,
-            "uloga": korisnik.uloga,
-            "lozinka" : korisnik.lozinka
+            "uloga": korisnik.uloga
         }
     }), 200

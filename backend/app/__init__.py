@@ -3,6 +3,7 @@ from .config import Config
 from .extensions import db, migrate, jwt
 from scraping.tickets_scraper import run_scraping
 from scheduler.jobs import start_scheduler
+from flasgger import Swagger
 
 from .models import (
     Korisnik,
@@ -24,6 +25,16 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
+
+
+    Swagger(app, template={
+    "info": {
+        "title": "Beograd Events API",
+        "description": "API za upravljanje događajima u Beogradu",
+        "version": "1.0.0"
+    }
+})
+
 
     app.register_blueprint(korisnik_bp)
     app.register_blueprint(dogadjaj_bp)
