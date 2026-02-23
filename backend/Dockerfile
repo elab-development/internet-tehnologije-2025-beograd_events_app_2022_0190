@@ -10,5 +10,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["python", "run.py"]
-
+CMD ["sh", "-c", "sleep 10 && python run.py"]

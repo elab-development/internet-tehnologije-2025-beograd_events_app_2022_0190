@@ -2,9 +2,55 @@ from flask import Blueprint, request, jsonify
 from app.extensions import db
 from app.models import Dogadjaj
 from datetime import date
+import requests
 
 dogadjaj_bp = Blueprint("dogadjaj", __name__, url_prefix="/api/dogadjaji")
+import os
+OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
+def get_weather(city=None):
+    try:
+        # UVEK koristimo Beograd
+        url = f"https://api.openweathermap.org/data/2.5/weather?q=Belgrade,RS&appid={OPENWEATHER_API_KEY}&units=metric"
+
+        response = requests.get(url, timeout=3)
+        data = response.json()
+
+        if response.status_code == 200:
+            return {
+                "temperatura": data["main"]["temp"],
+                "vreme": data["weather"][0]["description"]
+            }
+        return None
+    except:
+        return None
+
+
+def get_coordinates(location):
+    try:
+        query = f"{location}, Beograd, Srbija"
+
+        url = "https://nominatim.openstreetmap.org/search"
+        params = {
+            "q": query,
+            "format": "json",
+            "limit": 1
+        }
+        headers = {
+            "User-Agent": "events-app"
+        }
+
+        response = requests.get(url, params=params, headers=headers, timeout=3)
+        data = response.json()
+
+        if data:
+            return {
+                "lat": data[0]["lat"],
+                "lon": data[0]["lon"]
+            }
+        return None
+    except:
+        return None
 
 @dogadjaj_bp.route("", methods=["GET"])
 def svi_dogadjaji():
@@ -42,9 +88,13 @@ def svi_dogadjaji():
     """
     danas = date.today()
     dogadjaji = Dogadjaj.query.filter(Dogadjaj.datum > danas).all()
+    rezultat = []
 
-    return jsonify([
-        {
+    for d in dogadjaji:
+        weather = get_weather()
+        coords = get_coordinates(d.lokacija)
+
+        rezultat.append({
             "id": d.id,
             "naziv": d.naziv,
             "opis": d.opis,
@@ -53,9 +103,14 @@ def svi_dogadjaji():
             "cena": d.cena,
             "imageURL": d.imageURL,
             "sourceURL": d.sourceURL,
-            "kategorija_dogadjaja_id": d.kategorija_dogadjaja_id
-        } for d in dogadjaji
-    ])
+            "kategorija_dogadjaja_id": d.kategorija_dogadjaja_id,
+            "temperatura": weather["temperatura"] if weather else None,
+            "vreme": weather["vreme"] if weather else None,
+            "lat": coords["lat"] if coords else None,
+            "lon": coords["lon"] if coords else None
+        })
+
+    return jsonify(rezultat)
 
 
 @dogadjaj_bp.route("", methods=["POST"])

@@ -12,3 +12,4 @@ class Config:
     MAIL_PASSWORD = "zqhj wtqp fulh lvze"
     MAIL_HOST = "smtp.gmail.com"
     MAIL_PORT = 587
+    

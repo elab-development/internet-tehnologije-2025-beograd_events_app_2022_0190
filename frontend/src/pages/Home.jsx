@@ -1,26 +1,31 @@
-  import { useEffect, useState } from "react";
-  import { useNavigate } from "react-router-dom";
-  import { getAllEvents } from "../services/eventService.js";
-  import { logoutUser } from "../services/authService.js";
-  import "../styles/home.css";
-  import { getCategoryById } from "../services/categoryService.js";
-  import { getAllPrivateEvents } from "../services/privateEventService.js";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getAllEvents } from "../services/eventService.js";
+import { logoutUser } from "../services/authService.js";
+import "../styles/home.css";
+import { getCategoryById } from "../services/categoryService.js";
+import { getAllPrivateEvents } from "../services/privateEventService.js";
 
+// ➕ MAPA
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
+function Home() {
+  const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
-  function Home() {
-    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+  const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const privateEvents = getAllPrivateEvents();
+  
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [allEvents, setAllEvents] = useState([]);
 
-    const navigate = useNavigate();
-    const [events, setEvents] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const privateEvents = getAllPrivateEvents();
-    
-    const [searchOpen, setSearchOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [allEvents, setAllEvents] = useState([]);
+  // VREME
+  const [weather, setWeather] = useState(null);
 
-    useEffect(() => {
+  useEffect(() => {
     setTimeout(async () => {
       const publicEvents = await getAllEvents();
       const privateEvents = await getAllPrivateEvents();
@@ -33,102 +38,144 @@
     }, 2000);
   }, []);
 
+  // FETCH TEMPERATURE
+  useEffect(() => {
+    fetch("http://localhost:5000/api/dogadjaji")
+      .then(res => res.json())
+      .then(data => {
+        if (data.length > 0 && data[0].temperatura) {
+          setWeather({
+            temperatura: data[0].temperatura,
+            vreme: data[0].vreme
+          });
+        }
+      });
+  }, []);
 
-    
-    const filteredEvents = allEvents.filter(event =>
-      event.naziv &&
-      event.naziv.toLowerCase().includes(searchTerm.trim().toLowerCase())
-    );
-    
-    
-    if (loading) {
-      return (
-        <div className="loader-center">
-          <div className="loader"></div>
-        </div>
-      );
-    }
-
+  const filteredEvents = allEvents.filter(event =>
+    event.naziv &&
+    event.naziv.toLowerCase().includes(searchTerm.trim().toLowerCase())
+  );
+  
+  if (loading) {
     return (
-      <div className="home-container">
-        {}
-        <div className="hero-section">
-    <h1>Događaji u Beogradu...</h1>
-
-    <div className="search-container">
-      {searchOpen && (
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="Pretraži događaje..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <button
-    className="search-reset"
-    onClick={() => {
-      setSearchTerm("");
-      setEvents(allEvents);
-    }}
-  >
-    ⟳
-  </button>
-
-        </div>
-      )}
-
-      <button
-        className="search-icon"
-        onClick={() => setSearchOpen(prev => !prev)}
-      >
-        🔍
-      </button>
-    </div>
-  </div>
-
-
-        <div className="events-grid-wrapper">
-          <div className="events-grid">
-          {(searchTerm ? filteredEvents : allEvents).map((event) => (
-              <div
-                className="event-card"
-                key={`${event.user ? "private" : "public"}-${event.id}`}
-
-                onClick={() =>
-                  navigate(
-                    event.korisnik_id
-                      ? `/events/private/${event.id}`
-                      : `/events/public/${event.id}`
-
-                  )
-                }
-                
-              >
-                <div className="event-image-wrapper">
-                  <img
-                    src={event.imageURL || "https://via.placeholder.com/300"}
-                    alt={event.naziv}
-                  />
-
-  {event.datum && (
-    <div className="event-overlay">
-      <span>
-        {event.datum}
-      </span>
-    </div>
-  )}
-
-                </div>
-
-                <h3 className="event-title">{event.naziv}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        
+      <div className="loader-center">
+        <div className="loader"></div>
       </div>
     );
   }
 
-  export default Home;
+  return (
+    <div className="home-container">
+      <div className="hero-section">
+
+        <div className="hero-content">
+          
+          <div className="hero-left">
+            <h1>Događaji u Beogradu...</h1>
+
+            {weather && (
+              <div className="weather-box">
+                🌡 {weather.temperatura}°C | {weather.vreme}
+              </div>
+            )}
+          </div>
+
+          <div className="hero-map">
+            <MapContainer
+              center={[44.8170058, 20.4610046]}
+              zoom={12}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; OpenStreetMap contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+
+              {allEvents
+                .filter(event => event.lat && event.lon)
+                .map(event => (
+                  <Marker
+                    key={event.id}
+                    position={[parseFloat(event.lat), parseFloat(event.lon)]}
+                  >
+                    <Popup>
+                      <strong>{event.naziv}</strong>
+                      <br />
+                      {event.datum}
+                    </Popup>
+                  </Marker>
+                ))}
+            </MapContainer>
+          </div>
+
+        </div>
+
+        <div className="search-container">
+          {searchOpen && (
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="Pretraži događaje..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button
+                className="search-reset"
+                onClick={() => {
+                  setSearchTerm("");
+                  setEvents(allEvents);
+                }}
+              >
+                ⟳
+              </button>
+            </div>
+          )}
+
+          <button
+            className="search-icon"
+            onClick={() => setSearchOpen(prev => !prev)}
+          >
+            🔍
+          </button>
+        </div>
+      </div>
+
+      <div className="events-grid-wrapper">
+        <div className="events-grid">
+          {(searchTerm ? filteredEvents : allEvents).map((event) => (
+            <div
+              className="event-card"
+              key={`${event.user ? "private" : "public"}-${event.id}`}
+              onClick={() =>
+                navigate(
+                  event.korisnik_id
+                    ? `/events/private/${event.id}`
+                    : `/events/public/${event.id}`
+                )
+              }
+            >
+              <div className="event-image-wrapper">
+                <img
+                  src={event.imageURL || "https://via.placeholder.com/300"}
+                  alt={event.naziv}
+                />
+
+                {event.datum && (
+                  <div className="event-overlay">
+                    <span>{event.datum}</span>
+                  </div>
+                )}
+              </div>
+
+              <h3 className="event-title">{event.naziv}</h3>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+export default Home;

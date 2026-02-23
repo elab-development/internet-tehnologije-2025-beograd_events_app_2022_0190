@@ -9,4 +9,5 @@ requests
 beautifulsoup4
 apscheduler
 cryptography
+flasgger
 
