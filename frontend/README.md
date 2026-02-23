@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+# Beograd Events App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Opis projekta
 
-## Available Scripts
+Beograd Events App je web aplikacija za automatsko prikupljanje, obradu i prikaz događaja u Beogradu.
 
-In the project directory, you can run:
+Aplikacija koristi web scraping tehniku za preuzimanje podataka sa tri različita sajta i skladišti ih u MySQL bazu podataka. Korisnici mogu da pregledaju događaje, registruju se, prijave, dodaju događaje u omiljene i podese podsetnike putem email-a.
 
-### `npm start`
+Pored toga, aplikacija prikazuje:
+- Trenutnu temperaturu (OpenWeather API)
+- Mapu Beograda (OpenStreetMap API)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Funkcionalnosti
 
-### `npm test`
+- Web scraping događaja sa više izvora
+- Čuvanje događaja u bazi
+- REST API za rad sa događajima
+- Registracija i prijava korisnika
+- Dodavanje događaja u omiljene
+- Email podsetnici za događaje
+- Prikaz vremenske prognoze
+- Prikaz mape Beograda
+- Dockerizovana aplikacija
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Arhitektura sistema
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Aplikacija je podeljena na tri glavna servisa:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Frontend** (React)
+- **Backend** (Flask + SQLAlchemy)
+- **Baza podataka** (MySQL)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Sistem koristi Docker Compose za orkestraciju servisa.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Tehnologije
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Backend
+- Python
+- Flask
+- SQLAlchemy
+- BeautifulSoup (web scraping)
+- Requests
+- MySQL
+- OpenWeather API
+- OpenStreetMap API
+- SMTP (email podsetnici)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Frontend
+- React
+- JavaScript
+- CSS
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### DevOps
+- Docker
+- Docker Compose
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Pokretanje aplikacije
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Otvoriti terminal u root folderu projekta.
 
-### Code Splitting
+2. Pokrenuti komandu:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+docker compose up --build
 
-### Analyzing the Bundle Size
+3. Aplikacija je dostupna na:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Frontend:
+http://localhost:3000
 
-### Making a Progressive Web App
+Backend:
+http://localhost:5000
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Autori
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Branka Baković
+Nikola Ilić  
+Internet Tehnologije 2026 
+Beograd
