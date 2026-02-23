@@ -1,13 +1,13 @@
-const API_URL = "http://localhost:5000/api/privatni-dogadjaji";
+const API_URL = "/api/privatni-dogadjaji";
 
 export const getAllPrivateEvents = async () => {
   const res = await fetch(API_URL);
-  return res.json();
+  return await res.json();
 };
 
 export const getPrivateEventById = async (id) => {
   const res = await fetch(`${API_URL}/${id}`);
-  return res.json();
+  return await res.json();
 };
 
 export const createPrivateEvent = async (data, user) => {
@@ -27,26 +27,20 @@ export const createPrivateEvent = async (data, user) => {
       korisnik_id: user.id,
       imageURL:
         "https://alvasshowroom.com/wp-content/uploads/2018/08/Private-event-image.jpg"
-    })
+    }),
   });
 
-  if (!res.ok) {
-    return { success: false, message: "Greška pri kreiranju" };
-  }
-
-  return { success: true };
+  return { success: res.ok };
 };
 
 export const deletePrivateEvent = async (id) => {
-  await fetch(`${API_URL}/${id}`, {
-    method: "DELETE"
-  });
+  await fetch(`${API_URL}/${id}`, { method: "DELETE" });
 };
 
 export const updatePrivateEvent = async (event) => {
   await fetch(`${API_URL}/${event.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(event)
+    body: JSON.stringify(event),
   });
 };

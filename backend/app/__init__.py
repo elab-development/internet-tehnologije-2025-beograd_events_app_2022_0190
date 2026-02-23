@@ -31,8 +31,18 @@ def create_app():
     app.register_blueprint(omiljeni_bp)
     app.register_blueprint(privatni_bp)
 
+    with app.app_context():
+        db.create_all()
+        if not KategorijaDogadjaja.query.first():
+            kategorije = [
+                KategorijaDogadjaja(naziv="Koncert"),
+                KategorijaDogadjaja(naziv="Festival"),
+                KategorijaDogadjaja(naziv="Pozorište"),
+                KategorijaDogadjaja(naziv="Izložba"),
+            ]
 
-   
+            db.session.add_all(kategorije)
+            db.session.commit()
 
     start_scheduler(app)
 

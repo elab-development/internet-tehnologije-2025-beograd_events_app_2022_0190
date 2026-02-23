@@ -1,21 +1,14 @@
-const API_URL = "http://localhost:5000/api/omiljeni";
-
+const API_URL = "/api/omiljeni";
 
 export const isFavourite = async (korisnikId, dogadjajId) => {
-  const response = await fetch(
-    `${API_URL}/${korisnikId}/${dogadjajId}`
-  );
-
+  const response = await fetch(`${API_URL}/${korisnikId}/${dogadjajId}`);
   return response.ok;
 };
-
 
 export const addFavouriteEvent = async (korisnikId, dogadjajId) => {
   const response = await fetch(API_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       korisnik_id: korisnikId,
       dogadjaj_id: dogadjajId,
@@ -25,13 +18,10 @@ export const addFavouriteEvent = async (korisnikId, dogadjajId) => {
   return response.ok;
 };
 
-
 export const removeFavouriteEvent = async (korisnikId, dogadjajId) => {
   const response = await fetch(
     `${API_URL}/${korisnikId}/${dogadjajId}`,
-    {
-      method: "DELETE",
-    }
+    { method: "DELETE" }
   );
 
   return response.ok;

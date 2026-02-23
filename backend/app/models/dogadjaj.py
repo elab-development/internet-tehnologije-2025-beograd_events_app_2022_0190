@@ -6,7 +6,7 @@ class Dogadjaj(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     naziv = db.Column(db.String(100), nullable=False)
     opis = db.Column(db.Text, nullable=False)
-    datum = db.Column(db.Date, nullable=False)
+    datum = db.Column(db.Date, nullable=True)
     lokacija = db.Column(db.String(100), nullable=False)
     cena = db.Column(db.Float)
 

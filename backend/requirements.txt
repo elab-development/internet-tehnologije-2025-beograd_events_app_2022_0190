@@ -2,8 +2,11 @@ flask
 flask-sqlalchemy
 flask-migrate
 flask-jwt-extended
+flask-cors
 pymysql
 python-dotenv
 requests
 beautifulsoup4
 apscheduler
+cryptography
+
