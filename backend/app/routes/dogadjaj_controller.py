@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from app.extensions import db
 from app.models import Dogadjaj
 from datetime import date
+from datetime import datetime
 import requests
 
 dogadjaj_bp = Blueprint("dogadjaj", __name__, url_prefix="/api/dogadjaji")
@@ -159,7 +160,7 @@ def kreiraj_dogadjaj():
     d = Dogadjaj(
         naziv=data["naziv"],
         opis=data["opis"],
-        datum=data["datum"],
+        datum=datetime.strptime(data["datum"], "%Y-%m-%d").date(),
         lokacija=data["lokacija"],
         cena=data.get("cena"),
         imageURL=data.get("imageURL"),
