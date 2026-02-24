@@ -164,7 +164,7 @@ def run_scraping():
                 naziv=naziv,
                 opis="Za vise detalja posetite sajt "+source_url,
                 datum=datum,
-                lokacija=lokacija,
+                lokacija=lokacija or "Nepoznata lokacija",
                 cena=cena,
                 imageURL=image_url,
                 sourceURL=source_url,

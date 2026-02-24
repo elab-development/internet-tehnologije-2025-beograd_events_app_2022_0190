@@ -12,4 +12,4 @@ cryptography
 flasgger
 flask-wtf
 pytest
-
+gunicorn

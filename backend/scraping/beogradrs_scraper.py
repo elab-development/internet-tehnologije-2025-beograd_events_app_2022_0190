@@ -158,7 +158,7 @@ def run_beograd_scraping():
                 naziv=naziv,
                 opis=opis,
                 datum=datum,
-                lokacija=lokacija,
+                lokacija=lokacija or "Nepoznata lokacija",
                 cena=0,
                 imageURL=image_url,
                 sourceURL=source_url,
