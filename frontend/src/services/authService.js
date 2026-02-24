@@ -1,4 +1,4 @@
-const API_URL = "/api/korisnici";
+const API_URL = `${process.env.REACT_APP_API_URL}/api/dogadjaji`;
 
 export const registerUser = async (user) => {
   try {
