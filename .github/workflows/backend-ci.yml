@@ -2,17 +2,13 @@ name: Backend CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ develop, main ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ develop, main ]
 
 jobs:
-  test-backend:
+  test-and-build:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: backend
 
     steps:
       - name: Checkout code
@@ -25,8 +21,15 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd backend
           pip install -r requirements.txt
           pip install pytest
 
       - name: Run tests
-        run: pytest
+        run: |
+          cd backend
+          pytest
+
+      - name: Build Docker image (backend)
+        run: |
+          docker build -t beograd-events-backend ./backend
