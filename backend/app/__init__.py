@@ -24,7 +24,10 @@ def create_app(test_config=None):
     else:
         app.config.from_object(Config)
 
-    CORS(app, origins=["http://localhost:3000"])
+    CORS(app, origins=[
+    "http://localhost:3000",
+    "https://worthy-magic-production.up.railway.app"
+    ])
     
 
     db.init_app(app)

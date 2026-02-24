@@ -1,13 +1,15 @@
-# Build faza
-FROM node:18 AS build
+# build stage
+FROM node:18 as build
 
 WORKDIR /app
-COPY package.json package-lock.json ./
+
+COPY package*.json ./
 RUN npm install
+
 COPY . .
 RUN npm run build
 
-# Production faza
+# production stage
 FROM nginx:alpine
 
 COPY --from=build /app/build /usr/share/nginx/html

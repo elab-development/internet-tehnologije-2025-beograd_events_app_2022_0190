@@ -1,4 +1,4 @@
-const API_URL = `${process.env.REACT_APP_API_URL}/api/omiljeni`;
+const API_URL = `https://internet-tehnologije-2025-beogradeventsapp202-production.up.railway.app/api/omiljeni`;
 export const isFavourite = async (korisnikId, dogadjajId) => {
   const response = await fetch(`${API_URL}/${korisnikId}/${dogadjajId}`);
   return response.ok;

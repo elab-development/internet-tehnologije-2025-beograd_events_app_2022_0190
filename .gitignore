@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.ctl
+.env
 
 # Virtual environment
 backend/venv/
@@ -24,3 +26,4 @@ frontend/build/
 
 # Python cache
 backend/__pycache__/
+
