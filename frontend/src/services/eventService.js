@@ -1,4 +1,4 @@
-const API_URL = `https://internet-tehnologije-2025-beogradeventsapp202-production.up.railway.app/api/dogadjaji`;
+const API_URL = `${process.env.REACT_APP_API_URL}/dogadjaji`;
 
 export const getAllEvents = async () => {
   try {

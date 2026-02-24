@@ -13,7 +13,7 @@ function FavouriteEventsSection() {
 
     const fetchFavourites = async () => {
       try {
-        const res = await fetch(`https://internet-tehnologije-2025-beogradeventsapp202-production.up.railway.app/api/omiljeni/korisnik/${user.id}`);
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/omiljeni/korisnik/${user.id}`);
         const data = await res.json();
         setFavourites(data);
       } catch (err) {

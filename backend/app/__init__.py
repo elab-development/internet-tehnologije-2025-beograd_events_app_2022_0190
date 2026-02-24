@@ -24,10 +24,7 @@ def create_app(test_config=None):
     else:
         app.config.from_object(Config)
 
-    CORS(app, origins=[
-    "http://localhost:3000",
-    "https://worthy-magic-production.up.railway.app"
-    ])
+    CORS(app)
     
 
     db.init_app(app)
@@ -55,7 +52,7 @@ def create_app(test_config=None):
     csrf.exempt(privatni_bp)
     csrf.exempt(omiljeni_bp)
     with app.app_context():
-        db.create_all()
+        #db.create_all()
         if not KategorijaDogadjaja.query.first():
             kategorije = [
                 KategorijaDogadjaja(naziv="Koncert"),
@@ -63,9 +60,12 @@ def create_app(test_config=None):
                 KategorijaDogadjaja(naziv="Pozorište"),
                 KategorijaDogadjaja(naziv="Izložba"),
             ]
-
+        
             db.session.add_all(kategorije)
             db.session.commit()
+        
+        
+        
     if not app.config.get("TESTING"):
         start_scheduler(app)
 

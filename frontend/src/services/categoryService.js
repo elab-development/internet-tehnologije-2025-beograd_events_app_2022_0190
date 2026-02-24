@@ -1,4 +1,4 @@
-const API_URL = `https://internet-tehnologije-2025-beogradeventsapp202-production.up.railway.app/api/kategorije`;
+const API_URL = `${process.env.REACT_APP_API_URL}/kategorije`;
 export const getAllCategories = async () => {
   const response = await fetch(API_URL);
   return await response.json();

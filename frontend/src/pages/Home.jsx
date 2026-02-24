@@ -57,7 +57,7 @@ function Home() {
 
   // FETCH TEMPERATURE
   useEffect(() => {
-    fetch("http://localhost:5000/api/dogadjaji")
+    fetch(`${process.env.REACT_APP_API_URL}/dogadjaji`)
       .then(res => res.json())
       .then(data => {
         if (data.length > 0 && data[0].temperatura) {
