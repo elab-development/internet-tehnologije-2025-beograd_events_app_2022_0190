@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/dogadjaji";
+const API_URL = `${process.env.REACT_APP_API_URL}/api/dogadjaji`;
 
 export const getAllEvents = async () => {
   try {

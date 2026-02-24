@@ -1,5 +1,4 @@
-const API_URL = "/api/privatni-dogadjaji";
-
+const API_URL = `${process.env.REACT_APP_API_URL}/api/privatni-dogadjaji`;
 export const getAllPrivateEvents = async () => {
   const res = await fetch(API_URL);
   return await res.json();

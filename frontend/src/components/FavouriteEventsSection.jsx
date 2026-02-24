@@ -13,9 +13,7 @@ function FavouriteEventsSection() {
 
     const fetchFavourites = async () => {
       try {
-        const res = await fetch(
-          `/api/omiljeni/korisnik/${user.id}`
-      );
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/omiljeni/korisnik/${user.id}`);
         const data = await res.json();
         setFavourites(data);
       } catch (err) {
