@@ -10,6 +10,20 @@ import { getAllPrivateEvents } from "../services/privateEventService.js";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Fix za default marker
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+  iconUrl:
+    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+  shadowUrl:null,
+});
+
 function Home() {
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
@@ -17,7 +31,7 @@ function Home() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const privateEvents = getAllPrivateEvents();
-  
+
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [allEvents, setAllEvents] = useState([]);
@@ -33,7 +47,10 @@ function Home() {
       const data = [...privateEvents, ...publicEvents];
 
       setAllEvents(data);
+      
       setEvents(data);
+      console.log("DOBIJENI DOGADJAJI:", data);
+      console.log("PRVI EVENT:", data[0]);
       setLoading(false);
     }, 2000);
   }, []);
@@ -56,7 +73,7 @@ function Home() {
     event.naziv &&
     event.naziv.toLowerCase().includes(searchTerm.trim().toLowerCase())
   );
-  
+
   if (loading) {
     return (
       <div className="loader-center">
@@ -70,7 +87,7 @@ function Home() {
       <div className="hero-section">
 
         <div className="hero-content">
-          
+
           <div className="hero-left">
             <h1>Događaji u Beogradu...</h1>
 
@@ -83,7 +100,14 @@ function Home() {
 
           <div className="hero-map">
             <MapContainer
-              center={[44.8170058, 20.4610046]}
+              center={
+                allEvents.some(e => e.lat && e.lon)
+                  ? [
+                    parseFloat(allEvents.find(e => e.lat && e.lon).lat),
+                    parseFloat(allEvents.find(e => e.lat && e.lon).lon)
+                  ]
+                  : [44.8170058, 20.4610046]
+              }
               zoom={12}
               scrollWheelZoom={false}
             >
@@ -96,13 +120,24 @@ function Home() {
                 .filter(event => event.lat && event.lon)
                 .map(event => (
                   <Marker
-                    key={event.id}
-                    position={[parseFloat(event.lat), parseFloat(event.lon)]}
+                    key={`map-${event.id}`}
+                    position={[
+                      parseFloat(event.lat),
+                      parseFloat(event.lon)
+                    ]}
                   >
                     <Popup>
                       <strong>{event.naziv}</strong>
                       <br />
-                      {event.datum}
+                      📍 {event.lokacija}
+                      <br />
+                      📅 {event.datum}
+                      {event.temperatura && (
+                        <>
+                          <br />
+                          🌡 {event.temperatura}°C
+                        </>
+                      )}
                     </Popup>
                   </Marker>
                 ))}

@@ -4,16 +4,15 @@ from app.models import Dogadjaj
 from datetime import date
 from datetime import datetime
 import requests
+import os
 
 dogadjaj_bp = Blueprint("dogadjaj", __name__, url_prefix="/api/dogadjaji")
-import os
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
+
 
 def get_weather(city=None):
     try:
-        # UVEK koristimo Beograd
         url = f"https://api.openweathermap.org/data/2.5/weather?q=Belgrade,RS&appid={OPENWEATHER_API_KEY}&units=metric"
-
         response = requests.get(url, timeout=3)
         data = response.json()
 
@@ -26,10 +25,19 @@ def get_weather(city=None):
     except:
         return None
 
+import time
+
 
 def get_coordinates(location):
     try:
-        query = f"{location}, Beograd, Srbija"
+        # 1️⃣ Ako je nevalidna lokacija — vrati centar BG
+        if not location or location.lower().strip() in ["više lokacija", "vise lokacija"]:
+            return {
+                "lat": 44.8170058,
+                "lon": 20.4610046
+            }
+
+        query = f"{location}, Belgrade"
 
         url = "https://nominatim.openstreetmap.org/search"
         params = {
@@ -37,21 +45,34 @@ def get_coordinates(location):
             "format": "json",
             "limit": 1
         }
+
         headers = {
-            "User-Agent": "events-app"
+            "User-Agent": "dogadjaji-app (student project, ni20220190@student.fon.bg.ac.rs)"
         }
 
-        response = requests.get(url, params=params, headers=headers, timeout=3)
+        response = requests.get(url, params=params, headers=headers, timeout=5)
+        #time.sleep(1)
         data = response.json()
 
-        if data:
+        if response.status_code == 200 and len(data) > 0:
             return {
-                "lat": data[0]["lat"],
-                "lon": data[0]["lon"]
+                "lat": float(data[0]["lat"]),
+                "lon": float(data[0]["lon"])
             }
-        return None
-    except:
-        return None
+
+        # 2️⃣ Ako ništa ne nađe — vrati centar Beograda
+        return {
+            "lat": 44.8170058,
+            "lon": 20.4610046
+        }
+
+    except Exception as e:
+        print("GRESKA KOORDINATE:", e)
+        return {
+            "lat": 44.8170058,
+            "lon": 20.4610046
+        }
+
 
 @dogadjaj_bp.route("", methods=["GET"])
 def svi_dogadjaji():
@@ -86,6 +107,14 @@ def svi_dogadjaji():
                 type: string
               kategorija_dogadjaja_id:
                 type: integer
+              temperatura:
+                type: number
+              vreme:
+                type: string
+              lat:
+                type: string
+              lon:
+                type: string
     """
     danas = date.today()
     dogadjaji = Dogadjaj.query.filter(Dogadjaj.datum > danas).all()
@@ -192,10 +221,42 @@ def jedan_dogadjaj(id):
     responses:
       200:
         description: Jedan događaj
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            naziv:
+              type: string
+            opis:
+              type: string
+            datum:
+              type: string
+            lokacija:
+              type: string
+            cena:
+              type: number
+            imageURL:
+              type: string
+            sourceURL:
+              type: string
+            kategorija_dogadjaja_id:
+              type: integer
+            temperatura:
+              type: number
+            vreme:
+              type: string
+            lat:
+              type: string
+            lon:
+              type: string
       404:
         description: Događaj nije pronađen
     """
     d = Dogadjaj.query.get_or_404(id)
+
+    weather = get_weather()
+    coords = get_coordinates(d.lokacija)
 
     return jsonify({
         "id": d.id,
@@ -206,5 +267,9 @@ def jedan_dogadjaj(id):
         "cena": d.cena,
         "imageURL": d.imageURL,
         "sourceURL": d.sourceURL,
-        "kategorija_dogadjaja_id": d.kategorija_dogadjaja_id
+        "kategorija_dogadjaja_id": d.kategorija_dogadjaja_id,
+        "temperatura": weather["temperatura"] if weather else None,
+        "vreme": weather["vreme"] if weather else None,
+        "lat": coords["lat"] if coords else None,
+        "lon": coords["lon"] if coords else None
     })

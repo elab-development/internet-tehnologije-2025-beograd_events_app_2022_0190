@@ -39,6 +39,7 @@ def svi_omiljeni():
             }
         }
         for o in omiljeni
+        if o.dogadjaj is not None
     ])
 
 
@@ -75,6 +76,7 @@ def omiljeni_korisnika(korisnik_id):
             }
         }
         for o in omiljeni
+        if o.dogadjaj is not None
     ])
 
 

@@ -1,4 +1,4 @@
-const API_URL = "/api/dogadjaji";
+const API_URL = "http://localhost:5000/api/dogadjaji";
 
 export const getAllEvents = async () => {
   try {
