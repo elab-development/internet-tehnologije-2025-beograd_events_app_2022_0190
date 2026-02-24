@@ -35,4 +35,4 @@ def test_create_dogadjaj(client):
         "kategorija_dogadjaja_id": 1
     })
 
-    assert response.status_code == 500
+    assert response.status_code == 201
